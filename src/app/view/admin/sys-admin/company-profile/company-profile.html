@@ -1,0 +1,220 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default panel-white">
+            <div class="panel-heading">
+                <h3 class="panel-title">Business details</h3>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-custom form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-1">Business name</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" [(ngModel)]="profile.business.business_name" name="business_name" class="form-control" id="field-1" placeholder="Business name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">Legal name</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" [(ngModel)]="profile.business.legal_name" name="legal_name" class="form-control" id="field-2" placeholder="Legal name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-3">Business logo</label>
+
+                        <div class="col-sm-10">
+                            
+                            <input type="file" (change)="imgToBase64()" #file class="form-control" id="field-3">
+                            <div class="avatar-container  col-sm-6">
+                                <div class="frame avatar"
+                                    [ngClass]="{empty: !profile.business.business_logo}"
+                                    [ngStyle]="{ backgroundImage: profile.business.business_logo ? 'url(' + profile.business.business_logo + ')' : 'none'}">
+                                    <i class="fa fa-camera-retro fa-3x"
+                                        *ngIf="!profile.business.business_logo"
+                                    ></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-3"></label>
+
+                        <div class="col-sm-10">
+                            <a class="btn btn-success" (click)="saveProfile('business')" style="color: #fff;">Save</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default panel-white">
+            <div class="panel-heading">
+                <h3 class="panel-title">Registration details</h3>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-custom form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-1">Business registration number</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" [(ngModel)]="profile.registration.business_reg_no" name="business_reg_no" class="form-control" id="field-1" placeholder="Business registration number">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">GST registration number</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" [(ngModel)]="profile.registration.gst_reg_no" name="gst_reg_no" class="form-control" id="field-2" placeholder="GST registration number">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-3"></label>
+
+                        <div class="col-sm-10">
+                            <a class="btn btn-success" (click)="saveProfile('registration')" style="color: #fff;">Save</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default panel-white">
+            <div class="panel-heading">
+                <h3 class="panel-title">Address details</h3>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-custom form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-1">Address</label>
+
+                        <div class="col-sm-10">
+                            <textarea class="form-control autogrow control-width" [(ngModel)]="profile.address.street" name="street"  id="field-1" placeholder="Address"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">City, State, Post code</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" [(ngModel)]="profile.address.city_state" name="city_state" class="form-control" id="field-2" placeholder="City, State, Post code">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">Country</label>
+
+                        <div class="col-sm-10">
+                            <select class="form-control" [(ngModel)]="profile.address.country" name="country" id="field-2">
+                                <option *ngFor="let c of countries" [value]="c">{{c}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-3"></label>
+
+                        <div class="col-sm-10">
+                            <a class="btn btn-success" (click)="saveProfile('address')" style="color: #fff;">Save</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>	
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default panel-white">
+            <div class="panel-heading">
+                <h3 class="panel-title">Key contact details</h3>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-custom form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-1">Name</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" [(ngModel)]="profile.contact.contact_name" name="contact_name" class="form-control" placeholder="Name" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">Email ID</label>
+
+                        <div class="col-sm-10">
+                            <input type="email" [(ngModel)]="profile.contact.contact_email" name="contact_email" class="form-control" id="field-2" placeholder="Email ">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">Mobile phone</label>
+
+                        <div class="col-sm-10">
+                            <input type="number" [(ngModel)]="profile.contact.contact_mobile" name="contact_mobile" class="form-control no-spin" max="10" id="field-2" placeholder="Mobile Phone ">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-3"></label>
+
+                        <div class="col-sm-10">
+                            <a class="btn btn-success" (click)="saveProfile('contact')" style="color: #fff;">Save</a>
+                        </div>
+                    </div>
+                </form>
+                <a style="visibility: hidden" #alert data-toggle="modal" data-target="#add_new"></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade modal-2" id="add_new">
+    <div class="modal-dialog" style="width: 40%;">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Information</h4>
+            </div>
+            
+            <div class="modal-body">
+                Profile updated successfully!
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-white">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,277 @@
+<!-- Basic Setup -->
+<div class="panel panel-default">
+	<div *ngIf="loading" class="loaderScreen">
+		<img src="assets/images/loading.gif">
+	</div>
+	<div class="panel-heading">
+		<h3 class="panel-title">Store employees</h3>
+	</div>
+	<div class="panel-body">
+		<div class="action-bar">
+			<div class="col-sm-11">
+				<div class="col-sm-6">
+					<div class="alert alert-success"
+						*ngIf="message.length > 0 ? true : false">
+						<b>{{message}}</b>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-1">
+				<a data-toggle="modal" data-target="#addmodal"
+					(click)="onNewEmployeeClick()"><img
+					src="assets/images/add-employee.png" /></a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th>Store</th>
+						<th>Employee</th>
+						<th>Login name</th>
+						<th>Role</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let employee of employees">
+						<td>{{employee.store}}</td>
+						<td>{{employee.name}}</td>
+						<td>{{employee.loginname}}</td>
+						<td>{{employee.role_name}}</td>
+						<td>{{employee.status_name}}</td>
+						<td><a href="#" data-toggle="modal" data-target="#modal"
+							(click)="onEmployee(employee)"> <img
+								src="assets/images/edit-employee.png" /></a></td>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade modal-1" id="modal" *ngIf="selectedEmployee"
+	[style.display]="showModal ? 'block' : 'none'">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" style="font-weight: 600;">Employee
+					details</h4>
+			</div>
+
+			<div class="modal-body">
+				<div *ngIf="loading" class="loaderScreen">
+					<img src="assets/images/loading.gif">
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Store</label>
+					</div>
+					<div class="col-sm-8">
+						<select #selectStoregrp
+							(change)="selectedStoreGroup(selectStoregrp.value)"
+							class="form-control">
+							<option *ngFor="let stgrp of stores" [value]="stgrp.group_id"
+								[selected]="stgrp.group_id.toString() === selectedEmployee.store_id.toString()">{{stgrp.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Employee Name</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="text" class="form-control"
+							[(ngModel)]="selectedEmployee.name" placeholder="name" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Employee Role</label>
+					</div>
+					<div class="col-sm-8">
+						<select #selectRole (change)="selectedRole(selectRole.value)"
+							class="form-control">
+							<option *ngFor="let er of roles" [value]="er.employee_role_id"
+								[selected]="er.name === selectedEmployee.role_name">{{er.name}}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Login Name</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="text" class="form-control"
+							[(ngModel)]="selectedEmployee.loginname" placeholder="username" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Password</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="password" class="form-control"
+							[(ngModel)]="selectedEmployee.password" placeholder="password" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Confirm Password</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="password" class="form-control"
+							[(ngModel)]="selectedEmployee.confirmpassword" value=""
+							placeholder="confirm password" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Status</label>
+					</div>
+					<div class="col-sm-8">
+						<select #selectStatus
+							(change)="selectIsActive(selectStatus.value)"
+							class="form-control">
+							<option *ngFor="let st of statusArr" [value]="st.id"
+								[selected]="st.name === selectedEmployee.status_name">
+								{{st.name}}</option>
+						</select>
+						<!-- 						<select class="form-control" [(ngModel)]="selectedEmployee.status" #activeInactive (change)="selectIsActive(activeInactive.value)"> -->
+						<!-- 							<option value="Active" [selected]="selectedEmployee.status.toString() === '1'">Active</option> -->
+						<!-- 							<option value="Inactive" [selected]="selectedEmployee.status.toString() === '0'">Inactive</option> -->
+						<!-- 						</select> -->
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-10">
+						<label style="color: #FF0000">{{validationError}}</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info"
+					(click)="onEmployeeUpdate()">Update</button>
+				<button type="button" class="btn btn-info outline"
+					data-dismiss="modal" (click)="onDeleteClick()">Delete</button>
+				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-1" id="addmodal" *ngIf="newEmployee"
+	[style.display]="showNewModal ? 'block' : 'none'">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" style="font-weight: 600;">Employee
+					details</h4>
+			</div>
+
+			<div class="modal-body">
+			<div *ngIf="loading" class="loaderScreen">
+				<img src="assets/images/loading.gif">
+			</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Store</label>
+					</div>
+					<div class="col-sm-8">
+						<select #selectStoregrp
+							(change)="selectedStoreGroup(selectStoregrp.value)"
+							class="form-control">
+							<option *ngFor="let stgrp of stores" [value]="stgrp.group_id">{{stgrp.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Employee Name</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="text" class="form-control"
+							[(ngModel)]="newEmployee.name" placeholder="name" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Employee Role</label>
+					</div>
+					<div class="col-sm-8">
+						<select #selectRole (change)="selectedRole(selectRole.value)"
+							class="form-control">
+							<option *ngFor="let er of roles" [value]="er.employee_role_id">
+								{{er.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Login Name</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="text" class="form-control"
+							[(ngModel)]="newEmployee.loginname" placeholder="username" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Password</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="password" class="form-control"
+							[(ngModel)]="newEmployee.password" placeholder="password" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Confirm Password</label>
+					</div>
+					<div class="col-sm-8">
+						<input type="password" class="form-control" value=""
+							[(ngModel)]="newEmployee.confirmpassword"
+							placeholder="confirm password" />
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-4">
+						<label>Status</label>
+					</div>
+					<div class="col-sm-8">
+						<select #selectStatus
+							(change)="selectIsActive(selectStatus.value)"
+							class="form-control">
+							<option *ngFor="let st of statusArr" [value]="st.id">
+								{{st.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-10">
+						<label style="color: #FF0000">{{validationError}}</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info"
+					(click)="onNewEmployeeSave()">Save</button>
+				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>

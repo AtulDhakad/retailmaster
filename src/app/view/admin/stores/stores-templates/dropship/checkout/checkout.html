@@ -1,0 +1,420 @@
+<!--  Sidebar Container -->
+<div class="col-md-12 col-sm-12 col-xs-12 content-container">
+	<div *ngIf="loading" class="loaderScreen">
+		<img src="assets/images/loading.gif">
+	</div>
+	<div class="row">
+		<!-- left sidebar -->
+		<div class="col-md-6 col-sm-12 forms-tabbing">
+			<div class="mt-50">
+				<!-- TABS  -->
+				<div class="cart-tabs">
+					<div class="col-md-12 col-sm-12">
+						<ul class="nav nav-tabs nav-tabs-center cart-tabs">
+							<li role="presentation" class="active"><a data-toggle="tab"
+								href="#tab1">BILLING DETAILS</a></li>
+							<li role="presentation"><a data-toggle="tab" href="#tab2">SHIPPING
+									DETAILS</a></li>
+							<!--<li role="presentation"><a data-toggle="tab" href="#tab2">Same as billing details</a></li>-->
+						</ul>
+					</div>
+					<div style="clear: both"></div>
+					<div class="tab-content">
+						<div id="tab1" class="tab-pane fade active in">
+							<div class="space mt-40 mb-20">
+								<h3>Billing Details</h3>
+							</div>
+							<!-- FORM -->
+							<form class="form-cont">
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="First name" name="firstname"
+											*ngIf="billingAddress" [(ngModel)]="billingAddress.firstname" />
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											name="lastname" placeholder="Last name"
+											[(ngModel)]="billingAddress.lastname" />
+									</div>
+								</div>
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Company name" name="company"
+											[(ngModel)]="billingAddress.company" />
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="email" class="form-control input-text"
+											placeholder="Email address" name="email"
+											[(ngModel)]="billingAddress.email" />
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Phone number" name="telephone"
+											[(ngModel)]="billingAddress.telephone" />
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<select #cmbBillingCountry
+											(change)="onBillingSelectedCountry(cmbBillingCountry.value)"
+											class="form-control">
+											<option *ngFor="let ct of countryList"
+												[value]="ct.country_id"
+												[selected]="ct.country_id === billingAddress.country_id">{{ct.country_name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<select #cmbBillingRegion
+											(change)="onBillingSelectedRegion(cmbBillingRegion.value)"
+											class="form-control">
+											<option *ngFor="let rg of billingRegionsList"
+												[value]="rg.region_id"
+												[selected]="rg.region_id === billingAddress.region_id">{{rg.default_name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text" name="city"
+											placeholder="City/Town" [(ngModel)]="billingAddress.city" />
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Postal code" name="postcode"
+											[(ngModel)]="billingAddress.postcode" />
+									</div>
+								</div>
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Street address" name="street"
+											[(ngModel)]="billingAddress.street" />
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<button (click)="openview('cart')" type="submit"
+										class="btn back-btn">BACK TO CART</button>
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<button type="submit" class="btn contact-btn"
+										(click)="onSaveContact();">SAVE CONTACT</button>
+								</div>
+							</form>
+						</div>
+						<div id="tab2" class="tab-pane fade text-left">
+							<div class="space mt-40 mb-20">
+								<h3>Shipping Details</h3>
+								<p class="same-rec">
+									<input type="checkbox" checked="checked"
+										(click)="onCheckBoxSelected()" [(ngModel)]="isShippingSame" />
+									Same as billing details
+								</p>
+							</div>
+							<!-- FORM -->
+							<form class="form-cont">
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="First name" name="firstname"
+											[(ngModel)]="shippingAddress.firstname" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Last name" name="lastname"
+											[(ngModel)]="shippingAddress.lastname" />
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Company name" name="company"
+											[(ngModel)]="shippingAddress.company" />
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="email" class="form-control input-text"
+											placeholder="Email address" name="email"
+											[(ngModel)]="shippingAddress.email" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Phone number" name="telephone"
+											[(ngModel)]="shippingAddress.telephone" />
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<select #cmbShippingCountry
+											(change)="onShippingSelectedCountry(cmbShippingCountry.value)"
+											class="form-control">
+											<option *ngFor="let ct of countryList"
+												[value]="ct.country_id"
+												[selected]="ct.country_id === shippingAddress.country_id">{{ct.country_name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<select #cmbShippingRegion
+											(change)="onShippingSelectedRegion(cmbShippingRegion.value)"
+											class="form-control">
+											<option *ngFor="let rg of shippingRegionsList"
+												[value]="rg.region_id"
+												[selected]="rg.region_id === shippingAddress.region_id">{{rg.default_name}}</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text" name="city"
+											placeholder="City/Town" [(ngModel)]="shippingAddress.city" />
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Postal code" name="postcode"
+											[(ngModel)]="shippingAddress.postcode" />
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Street address" name="street"
+											[(ngModel)]="shippingAddress.street" />
+									</div>
+								</div>
+
+
+
+								<div class="col-md-4 col-sm-4">
+									<button (click)="openview('cart')" type="submit"
+										class="btn back-btn">BACK TO CART</button>
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<button type="submit" class="btn contact-btn"
+										(click)="onSaveContact();">SAVE CONTACT</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- right sidebar -->
+		<div class="col-md-6 col-sm-12 cart-right-sidebar">
+			<div class="space">
+				<div class="row">
+					<div class="col-md-9">
+						<h2 class="cart-head">Payment summary</h2>
+					</div>
+					<div class="col-md-3 st-font text-right">
+						<h2 class="cart-head">
+							<span class="pull-right">RM</span>
+						</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-9">
+						<h3>SUBTOTAL</h3>
+					</div>
+					<div class="col-md-3 st-font text-right">
+						<h3>RM{{subtotal | number : '1.2-2'}}</h3>
+					</div>
+				</div>
+				<div class="spacer100"></div>
+				<div class="row align-top">
+					<div class="col-md-4 align-top">
+						<h3>SHIPPING</h3>
+					</div>
+					<div class="col-md-5" style="padding-top: 15px;">
+						<div class="col-md-12" *ngFor="let sm of filteredShippingList">
+							<label><input type="radio" name="shipping_method"
+								[checked]="sm.value === selectedShippingMethod.value"
+								style="font-size: 13px" (click)="setShippingMethodSelected(sm);"
+								id="s-02"> {{sm.name}}</label>
+						</div>
+					</div>
+					<div class="col-md-3 st-font text-right">
+						<h3 *ngIf="selectedShippingMethod;then content else other_content"></h3>
+						<ng-template #content>
+						<h3>RM{{selectedShippingMethod.amount | number : '1.2-2'}}</h3>
+						</ng-template>
+						<ng-template #other_content>
+						<h3>RM{{0 | number : '1.2-2'}}</h3>
+						</ng-template>
+					</div>
+				</div>
+				<div class="spacer100"></div>
+				<div class="row">
+					<div class="col-md-9">
+						<h3>GST</h3>
+					</div>
+					<div class="col-md-3 st-font text-right">
+						<h3>RM{{gst | number : '1.2-2'}}</h3>
+					</div>
+				</div>
+				<div class="spacer100"></div>
+				<div class="row">
+					<div class="col-md-9">
+						<h3>TOTAL</h3>
+					</div>
+					<div class="col-md-3 st-font text-right">
+						<h3>RM{{total | number : '1.2-2'}}</h3>
+					</div>
+				</div>
+				<div class="spacer100"></div>
+				<div class="row">
+					<div class="col-md-4">
+						<h3>LESS</h3>
+					</div>
+					<div class="col-md-5" style="padding-top: 17px;">
+						<div class="col-md-12">
+							<label><input type="checkbox" name="less_method"
+								(change)="onStoreCreditSelected();"
+								[(ngModel)]="isStoreCreditSelected" id="s-02"> Store
+								credit</label>
+						</div>
+						<div class="col-md-12">
+							<input type="checkbox" name="less_method" id="s-02"
+								class="v-align-top"> <label class="edit-access-hidden"
+								style="font-size: 13px"> Credit memo <br /> <input
+								type="text" class="hidden-form" placeholder="Credit memo no."
+								[(ngModel)]="creditMemoNumber" /> <input type="text"
+								class="hidden-form hidden-form-small text-right"
+								(blur)="UpdateTotal()" data-mask="rcurrency"
+								[(ngModel)]="creditMemo" placeholder="0.00" /> <img
+								src="assets/so-images/save.png" class="hidden-form save-field" />
+							</label> <span
+								class="input-value st-font woocommerce-Price-amount amount pull-right semibold"><span
+								class="woocommerce-Price-currencySymbol"></span></span>
+						</div>
+						<div class="col-md-12">
+							<input type="checkbox" name="less_method" id="s-03"
+								class="v-align-top"> <label class="edit-access-hidden"
+								style="font-size: 13px"> Discount voucher <br /> <input
+								type="text" class="hidden-form" placeholder="Voucher no."
+								[(ngModel)]="discountVoucherNumber" /> <input type="text"
+								class="hidden-form hidden-form-small text-right"
+								(blur)="UpdateTotal()" data-mask="rcurrency"
+								[(ngModel)]="discountVoucher" placeholder="0.00" /> <img
+								src="assets/so-images/save.png" class="hidden-form save-field" />
+							</label> <span
+								class="input-value st-font woocommerce-Price-amount amount pull-right semibold"><span
+								class="woocommerce-Price-currencySymbol"></span></span>
+						</div>
+						<div class="col-md-12">
+							<input type="checkbox" name="less_method" id="s-03"
+								class="v-align-top"> <label class="edit-access-hidden"
+								style="font-size: 13px"> Gift voucher <br /> <input
+								type="text" class="hidden-form" placeholder="Voucher no."
+								[(ngModel)]="giftVoucherNumber" /> <input type="text"
+								class="hidden-form hidden-form-small text-right"
+								(blur)="UpdateTotal()" data-mask="rcurrency"
+								[(ngModel)]="giftVoucher" placeholder="0.00" /> <img
+								src="assets/so-images/save.png" class="hidden-form save-field" />
+							</label> <span
+								class="input-value st-font woocommerce-Price-amount amount pull-right semibold"><span
+								class="woocommerce-Price-currencySymbol"></span></span>
+						</div>
+					</div>
+					<div class="col-md-3 st-font text-right">
+						<h3>RM({{totalDiscount | number : '1.2-2'}})</h3>
+					</div>
+				</div>
+				<div class="spacer100"></div>
+				<div class="row">
+					<div class="col-md-8">
+						<h3 class="price-bold">Total amount payable</h3>
+					</div>
+					<div class="col-md-4 st-font text-right">
+						<h3 class="price-bold">RM{{totalAmountPayable | number :
+							'1.2-2'}}</h3>
+					</div>
+				</div>
+
+				<div class="row table-responsive">
+					<table class="table price-table table-bordered">
+						<thead>
+							<tr valign="middle">
+								<th style="padding-left: 15px"><select class="form-control"
+									#cmbPaymentMethod
+									(change)="onPaymentMethodSelected(cmbPaymentMethod.value)"
+									*ngIf="selepaymentmethodindex"
+									[ngModel]="selepaymentmethodindex.value" style="size: 15"
+									name="selepaymentmethodindex.value">
+										<!-- 										<option value="0">Select payment method...</option> -->
+										<option *ngFor="let pp of paymentProcessList"
+											[value]="pp.value">{{pp.name}}</option>
+								</select></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let spp of selectedPaymentProcess">
+								<td class="v-align-middle"><img
+									src="assets/images/Cancel-24.png"
+									class="img-responsive v-align-middle close-icon"
+									(click)="onRemovePaymentProcess(spp)" /><label
+									class="edit-access-hidden"
+									style="float: left; margin-left: 40px; margin-top: 10px; color: #dc3b20;">
+										{{spp.name}}</label></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="row col-sm-12" style="padding-top: 30px;"
+					*ngIf="message">
+					<div class="alert"
+						[ngClass]="{'alert-success' : alertType === SUCCESS,
+															'alert-danger' : alertType === WARNING}"
+						*ngIf="message.length > 0 ? true : false">
+						<b>{{message}}</b>
+					</div>
+				</div>
+				<div class="row" style="padding-top: 30px;">
+					<button id="placeOrder" (click)="onPlaceOrder()"
+						[disabled]="!isPaymentMethodSelected"
+						class="btn btn-default checkout-btn order-btn mb-60"
+						style="width: 100%">PLACE ORDER</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-dropship-success-notification
+	(onClick)="onSuccessButtonClick($event)" [orderDetails]="orderDetail"
+	[salesOrder]="salesOrder" *ngIf="showSuccess"></app-dropship-success-notification>

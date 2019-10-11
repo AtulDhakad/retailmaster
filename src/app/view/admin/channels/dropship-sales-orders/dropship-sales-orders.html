@@ -1,0 +1,375 @@
+<div class="row">
+	<div class="row col-sm-12" style="padding-top: 10px;">
+		<div class="alert"
+			[ngClass]="{'alert-success' : alertType === SUCCESS,
+															'alert-danger' : alertType === WARNING}"
+			*ngIf="message.length > 0 ? true : false">
+			<b>{{message}}</b>
+		</div>
+	</div>
+	<div *ngIf="loading" class="loaderScreen">
+		<img src="assets/images/loading.gif">
+	</div>
+	<div class="col-md-4 col-sm-6">
+		<div class="row">
+			<div class="col-md-2 text-right" style="padding-top: 7px">Search
+				:</div>
+			<div class="col-md-10" style="padding-top: 5px">
+				<input type="text" class="form-control" [(ngModel)]="searchString"
+					placeholder="Search by order ID, name, phone">
+			</div>
+			<div class="col-md-2 text-right" style="padding-top: 7px">Store
+				:</div>
+			<div class="col-md-10" style="padding-top: 5px">
+				<select #cmbStore (change)="onSelectedStore(cmbStore.value)"
+					class="form-control">
+					<option *ngFor="let st of storeList" [value]="st.store_id">{{st.name}}</option>
+				</select>
+			</div>
+
+		</div>
+		<!-- 		<div class="input-group form-group input-group-minimal"> -->
+		<!-- 			<span class="input-group-addon"> <i class="linecons-search"></i> -->
+		<!-- 			</span> <input type="email" class="form-control" -->
+		<!-- 				placeholder="Search by order ID, name, phone"> <span -->
+		<!-- 				class="input-group-addon"> <i class="linecons-shop"></i> -->
+		<!-- 			</span> <span class="input-group-addon"> <i class="linecons-calendar"></i> -->
+		<!-- 			</span> -->
+		<!-- 		</div> -->
+
+		<div class="row custom-buttons" style="padding-top: 5px">
+			<div class="col-md-4">
+				<button class="btn btn-orange btn-block"
+					[ngClass]="isPendingClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('pending')">Pending</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-blue btn-block"
+					[ngClass]="isProcessingClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('processing')">Processing</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-success btn-block"
+					[ngClass]="isCompleteClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('completed')">Complete</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-danger btn-block"
+					[ngClass]="isCancelledClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('cancelled')">Cancelled</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-cyan  btn-block"
+					[ngClass]="isRefundedClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('refunded')">Refunded</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-brown btn-block"
+					[ngClass]="isOnHoldClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('onhold')">On Hold</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"></div>
+			<div class="col-md-10">
+				<button class="btn btn-white" style="margin-left: 10px;"
+					(click)="getOrderBySearch()">Search</button>
+			</div>
+		</div>
+		<div class="row" *ngIf="dropShipsalesOrderMap.length > 0">
+			<div class="col-md-12" style="display: flex; padding-top: 15px">
+				<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+					<!-- 					<li [ngClass]="{disabled:pager.currentPage === 1}"><a -->
+					<!-- 						(click)="setPage(1)">First</a></li> -->
+					<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+						(click)="setPage(pager.currentPage - 1)"><</a></li>
+					<li *ngFor="let page of pager.pages"
+						[ngClass]="{active:pager.currentPage === page}"><a
+						(click)="setPage(page)">{{page}}</a></li>
+					<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+						<a (click)="setPage(pager.currentPage + 1)">></a>
+					</li>
+					<!-- 					<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}"> -->
+					<!-- 						<a (click)="setPage(pager.totalPages)">Last</a> -->
+					<!-- 					</li> -->
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="row orderlisting">
+				<div class="rowList"
+					*ngFor="let dropShipOrder of dropShipsalesOrderMap; let m = index">
+
+					<div class="text-center header">{{dropShipOrder.orderDate |
+						date:'fullDate'}}</div>
+					<ul style="list-style: none; padding-left: 0px">
+						<li *ngFor="let od of dropShipOrder.list; let i = index"
+							class="childList">
+							<div class="row orderlistingchild"
+								[class.active]="(m.toString() + i.toString()).toString() === selectedRow"
+								[ngClass]="getClassByStatus(od.status)"
+								(click)="selectedOrder(od, m, i);">
+								<div class="col-md-6 col-sm-6 order-info">
+									{{od.increment_id}} <span class="block">{{od.customer_firstname}}
+										{{od.customer_lastname}}</span>
+								</div>
+								<div class="col-md-3 col-sm-3 text-center time-info">{{od.created_at
+									| date : 'shortTime' }}</div>
+								<div class="col-md-3 col-sm-3 text-left order-info">
+									RM{{od.total_payable | number : '2.2-2'}}<span class="block">Saras</span>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8 col-sm-6" *ngIf="selectedOrderDetails">
+		<div class="order-heading-tip"
+			[ngClass]="getClassByStatus(selectedOrderDetails.status)">Order
+			# {{selectedOrderDetails.increment_id}} |
+			{{selectedOrderDetails.created_on | date : 'dd-MMM-yy'}} | Trademart
+			Marketing Sdn Bhd</div>
+
+		<div class="order-info-tip">
+			<table>
+				<tr>
+					<td align="left"><span class="fs-18 semi">RM{{selectedOrderDetails.total_payable
+							| number : '1.2-2'}}</span></td>
+					<td align="center"><span class="semi">Amount due <span
+							class="block">RM<strong>0</strong>
+						</span></span></td>
+					<td align="right">Status: <span class="semi">{{selectedOrderDetails.status}}</span>
+						<br />Managed by: <span class="semi">Saras</span></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="button-wrapper">
+			<div class="col-sm-2">
+				<button class="btn btn-default btn-sm btn-block">Change
+					Order</button>
+			</div>
+			<div class="col-sm-2 pl-0">
+				<button class="btn btn-default btn-sm btn-block">Cancel
+					Order</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-default  btn-sm btn-block">Create
+					Refund</button>
+			</div>
+
+			<div class="col-sm-2">
+				<button class="btn btn-default  btn-sm btn-block">Print
+					Order</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-default  btn-sm btn-block">Print
+					Invoice</button>
+			</div>
+
+			<div class="col-sm-2 pr-0">
+				<button class="btn btn-default  btn-sm btn-block">Add
+					Payment</button>
+			</div>
+		</div>
+
+		<div class="col-md-12 p-0">
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: #d3d3d3;">
+						<th>Product</th>
+						<th>Original Price</th>
+						<th>Price</th>
+						<th>Qty</th>
+						<th>Subtotal</th>
+						<th>Tax Amount</th>
+						<th>Row Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="border-bottom" *ngFor="let odItem of selectedOrderItems">
+						<td class="reverse-wrap">{{odItem.name}} <span class="block"
+							style="color: #d3d3d3; font-style: italic;">{{odItem.sku}}</span></td>
+						<td>RM{{odItem.price | number : '1.2-2'}}</td>
+						<td>RM{{odItem.special_price | number : '1.2-2'}}</td>
+						<td>{{odItem.quantity}}</td>
+						<td>{{getItemSubtotal(odItem) | number : '1.2-2'}}</td>
+						<td class="reverse-wrap">{{taxRt}}%</td>
+						<td>RM{{getTotalPrice(odItem) | number : '1.2-2'}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-8 p-0">
+			<h4 class="tabletitle">Store Credit History</h4>
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th>Date</th>
+						<th>Action</th>
+						<th>Change</th>
+						<th>Balance</th>
+						<th>Reference</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr>
+						<td>10-Apr-17</td>
+						<td>Credit</td>
+						<td>RM0.20 +</td>
+						<td>RM0.20</td>
+						<td>RESELLER99999</td>
+					</tr>
+					<tr>
+						<td>10-Apr-17</td>
+						<td>Credit</td>
+						<td>RM0.20 +</td>
+						<td>RM0.20</td>
+						<td>RESELLER99999</td>
+					</tr>
+					<tr>
+						<td>10-Apr-17</td>
+						<td>Credit</td>
+						<td>RM0.20 +</td>
+						<td>RM0.20</td>
+						<td>RESELLER99999</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-4 pl-1 pr-0">
+			<table class="table table-model-2">
+				<tbody>
+					<tr>
+						<td class="text-right"><strong>Subtotal incl. GST</strong></td>
+						<td class="reverse-wrap">RM{{getSubtotal() | number :
+							'1.2-2'}}</td>
+					</tr>
+					<tr>
+						<td class="text-right">Shipping & handling incl. GST</td>
+						<td class="reverse-wrap">RM00.00</td>
+					</tr>
+					<tr>
+						<td class="text-right"><strong>Grand total payable</strong></td>
+						<td class="reverse-wrap"><strong>RM
+								{{selectedOrderDetails.total_payable | number : '1.2-2'}}</strong></td>
+					</tr>
+					<tr>
+						<td class="text-right">Total Paid</td>
+						<td class="reverse-wrap">RM{{getTotalAmountPaid() | number :
+							'1.2-2'}}</td>
+					</tr>
+					<tr>
+						<td class="text-right"><strong>Balance Due</strong></td>
+						<td class="reverse-wrap"><strong>RM{{getTotalDue() |
+								number : '1.2-2'}}</strong></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div class="col-md-12 p-0">
+			<h4 class="tabletitle">Payment History</h4>
+			<table class="table table-model-2 ">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th>Payment method</th>
+						<th>Amount</th>
+						<th>Date</th>
+						<th>Time</th>
+						<th>Detail1</th>
+						<th>Detail2</th>
+						<th>Added by</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr *ngFor="let pp of selectedOrderPayments">
+						<td>{{pp.name}}</td>
+						<td>RM{{pp.savedAmt | number : '1.2-2'}}</td>
+						<td>{{pp.date}}</td>
+						<td>{{pp.time}}</td>
+						<td></td>
+						<td></td>
+						<td>Saras</td>
+						<td><a class="text-danger" (click)="onPaymentDelete(pp)">Delete</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div class="col-md-12 p-0">
+			<h4 class="tabletitle">Shipping History</h4>
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th>Shipping date</th>
+						<th>Carrier</th>
+						<th>Tariff</th>
+						<th>Tracking code</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>25-Mar-28</td>
+						<td>PosLaju</td>
+						<td></td>
+						<td>RR765487651MY</td>
+						<td class="text-danger">Delete</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-6 pl-0">
+			<h4 class="tabletitle">
+				Billing Address <i class="linecons-pencil pull-right"></i>
+			</h4>
+			<table class="table table-model-2" style="min-height: 200px;">
+				<tr>
+					<td>
+						<div class="row"
+							style="min-height: 200px; background-color: #fff; margin-right: 5px; margin-left: 5px">
+							<div class="col-md-12" style="padding-top: 5px">{{billingAddress.firstname}}
+								{{billingAddress.lastname}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{billingAddress.street}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{billingAddress.country_id}}
+								{{billingAddress.region}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{billingAddress.postcode}}</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="col-md-6 pr-0">
+			<h4 class="tabletitle">
+				Shipping Address <i class="linecons-pencil pull-right"></i>
+			</h4>
+			<table class="table table-model-2" style="min-height: 200px;">
+				<tr>
+					<td>
+						<div class="row"
+							style="min-height: 200px; background-color: #fff; margin-right: 5px; margin-left: 5px">
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.firstname}}
+								{{shipingAddress.lastname}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.street}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.country_id}}
+								{{shipingAddress.region}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.postcode}}</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

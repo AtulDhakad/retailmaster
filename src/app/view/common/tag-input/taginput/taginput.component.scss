@@ -1,0 +1,16 @@
+:host {
+        display: block;
+        padding: 6px 0;
+        border: 1px solid #eee;
+    }
+
+    :host.ng2-tag-input-focus {
+    }
+    input:focus{
+        outline: 0;
+    }
+
+    .ng2-tag-input-field {
+      box-shadow: none;
+      border: 0;
+    }

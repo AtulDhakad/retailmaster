@@ -1,0 +1,29 @@
+export class Address {
+  entity_id: string = '';
+  parent_id: string = '';
+  customer_address_id: string = '';
+  quote_address_id: string = '';
+  region_id: string = '';
+  customer_id: string = '';
+  fax: string = '';
+  region: string = '';
+  postcode: string = '';
+  lastname: string = '';
+  street: string = '';
+  city: string = '';
+  email: string = '';
+  telephone: string = '';
+  country_id: string = '';
+  firstname: string = '';
+  address_type: string = '';
+  prefix: string = '';
+  middlename: string = '';
+  suffix: string = '';
+  company: string = '';
+  vat_id: string = '';
+  vat_is_valid: string = '';
+  vat_request_id: string = '';
+  vat_request_date: string = '';
+  vat_request_success: string = '';
+  address_id: string = '';
+}

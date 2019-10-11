@@ -1,0 +1,142 @@
+<!-- <div class="animated fadeIn">
+  <table class="table table-bordered table-responsive table-sm storesales_table">
+    <thead>
+      <tr>
+        <th>Select action</th>
+        <td>
+          <button type="button" class="btn btn-outline-primary action_btn targets_btn"
+            (click)="actionChanged($event, 'targets')">Targets</button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-outline-success action_btn actuals_btn"
+            (click)="actionChanged($event, 'actuals')">Actuals</button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" (click)="saveTargets()"
+            [disabled]="!canSave || current_user.role_id>1" [hidden]="current_target != 'targets'">Save</button>
+        </td>
+      </tr>
+      <tr>
+        <th>Select store</th>
+        <ng-container *ngIf="stores!=null">
+          <td *ngFor="let store of stores">
+            <button type="button" class="btn {{btn_outline_class}} store_btn"
+              (click)="storeChanged($event, store)">{{store.name}}</button>
+          </td>
+        </ng-container>
+        <td>
+          <button type="button" class="btn {{btn_outline_class}} store_btn"
+            (click)="storeChanged($event, all_store)">All stores</button>
+        </td>
+      </tr>
+      <tr>
+        <th>Select year</th>
+        <td *ngFor="let year of years">
+          <button type="button" class="btn {{btn_outline_class}} year_btn"
+            (click)="yearChanged($event, year)">{{year}}</button>
+        </td>
+      </tr>
+      <tr>
+        <th>Select month</th>
+        <td *ngFor="let month of months">
+          <button type="button" class="btn {{btn_outline_class}} month_btn"
+            (click)="monthChanged($event, month)">{{month.title}}</button>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="14" [innerHtml]="message"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="current_target == 'targets'">
+        <ng-container *ngIf="actualtargetdata != null">
+          <tr class="table-success">
+            <th>Actual</th>
+            <td *ngFor="let month of months">
+              {{ getTotalActualFromMonth(month.no, actualtargetdata.actual.month_target) | number : '1.0-0' }}
+            </td>
+            <td>
+              {{ actualtargetdata.actual.yeartotal | number : '1.0-0'}}
+            </td>
+          </tr>
+          <tr class="table-info">
+            <th>Target</th>
+            <td *ngFor="let month of months">
+              <input class="form-control" type="number" [disabled]="current_user.role_id>1"
+                [hidden]="months_status[month.no-1] == false" [(ngModel)]="targetInputYearData[month.no-1]">
+              <ng-container *ngIf="months_status[month.no-1] == false">
+                {{ targetInputYearData[month.no-1] | number : '1.0-0'}}
+              </ng-container>
+
+            </td>
+            <td>
+              {{ getYearTarget() | number : '1.0-0'}}
+            </td>
+          </tr>
+          <tr class="table-danger">
+            <th>Variance</th>
+            <td *ngFor="let month of months">
+              {{ (getTotalActualFromMonth(month.no, actualtargetdata.actual.month_target) - targetInputYearData[month.no-1]) | number : '1.0-0' || '' }}
+            </td>
+            <td>
+              {{ (actualtargetdata.actual.yeartotal - getYearTarget()) | number : '1.0-0' }}
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="targetdata!=null">
+          <tr *ngFor="let employee of targetEmployeeInputYearData">
+            <th scope="row">{{ employee.employee.employee_display_name }} </th>
+            <td *ngFor="let month of months">
+              <input class="form-control" type="number" [disabled]="current_user.role_id>1"
+                [hidden]="months_status[month.no-1] == false" [(ngModel)]="employee.subtotal[month.no-1]" step=".01">
+              <ng-container *ngIf="months_status[month.no-1] == false">
+                {{ employee.subtotal[month.no-1] | number : '1.0-0' }}
+              </ng-container>
+            </td>
+            <td>
+              {{ getYearEmployeeTarget( employee.employee.employee_id)  | number : '1.0-0' }}
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="current_target == 'actuals'">
+        <ng-container *ngIf="actualtargetdata != null">
+          <tr class="table-success">
+            <th>Actual</th>
+            <td *ngFor="let month of months">
+              {{ getTotalActualFromMonth(month.no, actualtargetdata.actual.month_target) | number : '1.0-0' }}
+            </td>
+            <td>
+              {{ actualtargetdata.actual.yeartotal | number : '1.0-0'}}
+            </td>
+          </tr>
+          <tr class="table-info">
+            <th>Target</th>
+            <td *ngFor="let month of months">
+              {{ getTotalTargetFromMonth(month.no, actualtargetdata.target.month_target) | number : '1.0-0'}}
+            </td>
+            <td>
+              {{ actualtargetdata.target.yeartotal | number : '1.0-0'}}
+            </td>
+          </tr>
+          <tr class="table-danger">
+            <th>Variance</th>
+            <td *ngFor="let month of months">
+              {{ getVarianceActualTab(month.no) | number : '1.0-0' }}
+            </td>
+            <td>{{ (actualtargetdata.actual.yeartotal - actualtargetdata.target.yeartotal) | number : '1.0-0' }}</td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="actualdata!=null">
+          <tr *ngFor="let employee of actualdata">
+            <th scope="row">{{ employee.employee.employee_name }} </th>
+            <td *ngFor="let month of months">
+              {{ getSubTotal(month.no, employee.subtotals) | number : '1.0-0'}}
+            </td>
+            <td>{{employee.yeartotal | number : '1.0-0'}}</td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div> -->

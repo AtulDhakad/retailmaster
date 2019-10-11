@@ -1,0 +1,162 @@
+<div *ngIf="loading" class="loaderScreen">
+  <img src="assets/images/loading.gif">
+</div>
+<app-dropship-store-header *ngIf="store" [storeData]="store" [searchString]="productSearchString" [baseURL]="baseURL" [view]="currentView"
+  (onCustomerSearch)="onCustomerSearchClick();" (onOpenView)="openView($event)" [categories]="categories" (onProductSearch)="onProductSearch($event)"
+  (onCategorySelected)="onCategorySelected($event)" [selectedCustomer]="dropshipService.customerAddress$ | async"></app-dropship-store-header>
+
+<!--  Sidebar Container -->
+<div class="col-md-12 col-sm-12 col-xs-12 content-container">
+  <div class="row">
+    <app-dropship-store-home [baseURL]="baseURL" *ngIf="views[0].state" [products]="products" [cartItems]="cartItems" [storeData]="store"
+      (onAddProductToCartClick)="addProductToCart($event);" (onEditProductCartItem)="editProductToCart($event);" (onRemoveCartItem)="removeProductFromCart($event)"
+      (onOpenView)="openView($event)" (onViewProduct)="showProduct($event)"></app-dropship-store-home>
+
+    <app-dropship-store-cart [baseURL]="baseURL" *ngIf="views[1].state" (onRemoveCartItem)="removeProductFromCart($event)" [taxRate]="taxRate"
+      [cartItems]="cartItems" [websiteId]="store.website_id" (onOpenView)="openView($event);" (onEmptyCart)="onEmptyCart($event);"></app-dropship-store-cart>
+
+    <app-dropship-store-product [baseURL]="baseURL" *ngIf="views[2].state" (onAddProductToCartClick)="addProductToCart($event);"
+      [product]="viewProduct"></app-dropship-store-product>
+    <app-dropship-store-checkout [baseURL]="baseURL" [storeData]="store" [selectedPaymentProcess]="selectedOrderPayments" [isSaleHistory]="isSaleHistory"
+      [selectedOrderDetails]="selectedOrderDetails" [selectedOrderItems]="selectedOrderItems" [customerCredit]="dropshipService.custCredit$ | async"
+      [billingAddress]="dropshipService.customerAddress$ | async" [shippingAddress]="dropshipService.customerAddress$ | async"
+      [selectedCustomer]="selectedCustomer" *ngIf="views[3].state" [taxRate]="taxRate" [cartItems]="cartItems" (onOpenView)="openView($event)"></app-dropship-store-checkout>
+  </div>
+</div>
+
+<!-- POPUP MODAL -->
+<div class="modal" id="myModal" tabindex="-1" role="dialog" [style.display]="showCustomerSearch ? 'block' : 'none'" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header popup-modal-header">
+        <button type="button" class="close popup-close-btn" data-dismiss="modal" aria-label="Close" (click)="onCustomerSearchClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">CUSTOMER SEARCH</h4>
+      </div>
+      <div class="modal-body popup-modal-body">
+        <div class="row">
+          <div class="col-md-10 col-sm-10 col-xs-9" style="padding-right: 0px">
+            <div class="form-group">
+              <input type="text" class="form-control popup-input-text" (keyup)="onKeyUp($event);" placeholder="Search by name" [(ngModel)]="searchString">
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-3" style="padding-left: 0px">
+            <img src="assets/so-images/ic-01.png" class="img-responsive top-header-icon" style="float: right; padding-top: 3px" (click)="onCustomerSearch()">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row col-sm-12" style="padding-top: 30px;">
+            <div class="alert" [ngClass]="{'alert-success' : alertType === SUCCESS,
+															'alert-danger' : alertType === WARNING}" *ngIf="message.length > 0 ? true : false">
+              <b>{{message}}</b>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="col-md-12 popup-scrl" style="padding-left: 0px">
+              <table class="table popup-table customer-table" *ngIf="customers">
+                <tr data-dismiss="myModal" data-target="#myModal2" *ngFor="let cust of customers">
+                  <td>
+                    <label (click)="onCustomerSelected(cust);">{{cust.name}}</label>
+                  </td>
+                  <td class="st-font">{{cust.telephone}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="col-md-12 mt-20">
+              <p class="text-center" style="color: #FFC741; font-style: italic; padding-top: 5px; margin-bottom: 5px">
+                If customer not found,
+                <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#myModal2" (click)="onNewCustomerClick();" style="color: #FFC741; text-decoration: underline;">click here to add new customer details </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="myModal2" tabindex="-1" role="dialog" *ngIf="selectedCustomer" [style.display]="showSelectedCustomer? 'block' : 'none'"
+  aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header popup-modal-header">
+        <button type="button" class="close popup-close-btn" data-dismiss="modal" aria-label="Close" (click)="onShowSelectedCustomerPopupClose();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel1">CUSTOMER DETAILS</h4>
+      </div>
+
+      <div class="modal-body popup-modal-body">
+        <form method="post">
+          <div class="row">
+            <div class="col-md-3 col-sm-4">
+              <p class="popup-form-label">First Name</p>
+            </div>
+
+            <div class="col-md-9 col-sm-8">
+              <div class="form-group">
+                <input type="text" id="txtName" [(ngModel)]="selectedCustomer.firstname" class="form-control popup-input-text " required=""
+                  [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-4">
+              <p class="popup-form-label">Last Name</p>
+            </div>
+
+            <div class="col-md-9 col-sm-8">
+              <div class="form-group">
+                <input type="text" class="form-control popup-input-text " [(ngModel)]="selectedCustomer.lastname" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-4">
+              <p class="popup-form-label">Mobile</p>
+            </div>
+
+            <div class="col-md-9 col-sm-8">
+              <div class="form-group">
+                <input type="text" class="form-control popup-input-text" [(ngModel)]="selectedCustomer.telephone" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-4">
+              <p class="popup-form-label">State</p>
+            </div>
+
+            <div class="col-md-9 col-sm-8">
+              <div class="form-group">
+                <select #cmbRegion (change)="onSelectedRegion(cmbRegion.value)" style="background-color: #E6E6E6; font-weight: bold;" class="form-control">
+                  <option *ngFor="let rg of regionList" [value]="rg.region_id" [selected]="rg.region_id === selectedCustomer.region_id">{{rg.default_name}}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- <div class="col-md-6 col-sm-6">
+                        <button type="submit" class="btn popup-btn">CREATE</button>
+                    </div> -->
+            <div class="col-md-3 col-sm-4">
+              <button data-dismiss="modal" type="submit" (click)="onShowSelectedCustomerPopupClose();" class="btn popup-btn text-uppercase">CANCEL</button>
+            </div>
+            <div class="col-md-9 col-sm-8">
+              <button id="btnSave" data-dismiss="modal" aria-label="Close" (click)="onShowSelectedCustomer()" type="submit" class="btn popup-btn text-uppercase">SELECT THIS CUSTOMER
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>

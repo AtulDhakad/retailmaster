@@ -1,0 +1,20 @@
+:host {
+        display: inline-block;
+        background: #ddd;
+        padding: 2px 4px;
+        border-radius: 2px;
+        margin-right: 3px;
+        color: #000;
+        margin-left: 3px;
+    }
+
+    :host.ng2-tag-input-item-selected {
+      color: white;
+      background: #0d8bff;
+    }
+
+    .ng2-tag-input-remove {
+      cursor: pointer;
+      display: inline-block;
+      padding: 0 3px;
+    }

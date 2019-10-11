@@ -1,0 +1,148 @@
+<!-- Basic Setup -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Today's key figures</h3>
+    </div>
+    <div class="panel-body">
+        <div class="action-bar">
+            <div></div>
+            <div>
+                <!--<a class="btn btn-white"><i class="fa fa-bars"></i></a>-->
+            </div>
+        </div>
+    </div>
+    <div class="row key-figures">
+        <div class="col-sm-2">
+            
+            <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="0" data-to="123687" data-suffix="" data-duration="2">
+                <div class="xe-icon">
+                    <i><img src="assets/images/cash-in-bank-32.png" alt="Cash In Bank Icon" class="img-responsive center-block" /></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">123,687</strong>
+                    <span>Cash in bank</span>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-sm-2">
+            
+            <div class="xe-widget xe-counter xe-counter-yellow" data-count=".num" data-from="0" data-to="123687" data-suffix="" data-duration="2">
+                <div class="xe-icon">
+                    <i><img src="assets/images/money_plus.png" alt="Cash In Bank Icon" class="img-responsive center-block" /></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">123,687</strong>
+                    <span>Receivables</span>
+                </div>
+            </div>
+        
+        </div>
+        <div class="col-sm-2">
+            
+            <div class="xe-widget xe-counter xe-counter-green" data-count=".num" data-from="0" data-to="123687" data-suffix="" data-duration="2">
+                <div class="xe-icon">
+                    <i><img src="assets/images/money_minus.png" alt="Cash In Bank Icon" class="img-responsive center-block" /></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">123,687</strong>
+                    <span>Payables</span>
+                </div>
+            </div>
+        
+        </div>
+        <div class="col-sm-2">
+            
+            <div class="xe-widget xe-counter xe-counter-orange" data-count=".num" data-from="0" data-to="123687" data-suffix="" data-duration="2">
+                <div class="xe-icon">
+                    <i><img src="assets/images/sold_today-32.png" alt="Cash In Bank Icon" class="img-responsive center-block" /></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">189,987</strong>
+                    <span>Sold today</span>
+                </div>
+            </div>
+        
+        </div>
+
+        <div class="col-sm-2">
+            
+            <div class="xe-widget xe-counter xe-counter-dgray" data-count=".num" data-from="0" data-to="123687" data-suffix="" data-duration="2">
+                <div class="xe-icon">
+                    <i><img src="assets/images/invoiced_today-32.png" alt="Cash In Bank Icon" class="img-responsive center-block" /></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">123,687</strong>
+                    <span>Invoiced today</span>
+                </div>
+            </div>
+        
+        </div>
+
+        <div class="col-sm-2">
+            
+            <div class="xe-widget xe-counter xe-counter-red" data-count=".num" data-from="0" data-to="123687" data-suffix="" data-duration="2">
+                <div class="xe-icon">
+                    <i><img src="assets/images/shipped_today-32.png" alt="Cash In Bank Icon" class="img-responsive center-block" /></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">123,687</strong>
+                    <span>Shipped today</span>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Moving averages</h3>
+    </div>
+    <div class="row select-widget" style="margin: 0px">
+        <div class="col-sm-1 year-selection active">2017</div>
+        <div class="col-sm-1 year-selection">2018</div>
+        <div class="col-sm-1 year-selection">2019</div>
+        <div class="col-sm-1 year-selection">2020</div>
+        <div class="col-sm-1 year-selection">2021</div>
+        <div class="col-sm-1 year-selection">2022</div>
+        <div class="col-sm-1 year-selection">2023</div>
+        <div class="col-sm-1 year-selection">2024</div>
+        <div class="col-sm-1 year-selection">2025</div>
+        <div class="col-sm-1 year-selection">2026</div>
+        <div class="col-sm-1 year-selection">&nbsp;</div>
+        <div class="col-sm-1 year-selection">&nbsp;</div>
+        <div class="flexible">
+            <div class="month-selection">Jan</div>
+            <div class="month-selection">Feb</div>
+            <div class="month-selection">Mar</div>
+            <div class="month-selection active">Apr</div>
+            <div class="month-selection">May</div>
+            <div class="month-selection">Jun</div>
+            <div class="month-selection">Jul</div>
+            <div class="month-selection">Aug</div>
+            <div class="month-selection">Sep</div>
+            <div class="month-selection">Oct</div>
+            <div class="month-selection">Nov</div>
+            <div class="month-selection">Dec</div>
+            <div class="month-selection">Year</div>
+        </div>
+    </div>
+    <div class="row">
+        <ngx-charts-line-chart
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="chartData"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [autoScale]="autoScale"
+        (select)="onSelect($event)">
+        </ngx-charts-line-chart>
+    </div>
+</div>

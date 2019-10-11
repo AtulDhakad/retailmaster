@@ -1,0 +1,433 @@
+$orange: #f69f2f;
+$green: #8dc63f;
+$dimBlack: #2c2e2f;
+$blue: #18a8df;
+
+.form-control {
+  padding: 6px 3px;
+}
+
+.btn-group {
+  height: 100%;
+  cursor: pointer;
+  > button {
+    height: 100%;
+  }
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  font-size: 10px;
+  padding: 4px;
+  cursor: text;
+  color: #000;
+}
+
+thead {
+  border-bottom: 2px solid;
+}
+
+thead tr {
+  height: 40px;
+}
+
+tbody td {
+  height: 55px;
+  font-weight: 600;
+}
+
+header {
+  border: 1px solid #000;
+  border-bottom: 2px solid #000;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  height: 25px;
+  width: 100%;
+}
+
+button.refresh {
+  border: none;
+  color: #fff;
+  width: 100%;
+  max-height: 100%;
+  outline: none;
+  padding: 5px;
+  margin: 0;
+  &:hover {
+    color: #fff !important;
+  }
+}
+
+.match-btn {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.select-row {
+  border: 1px solid;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+tbody {
+  display: block;
+  height: 387px;
+  overflow: overlay;
+  border-bottom: 1px solid #ddd;
+  overflow-x: hidden;
+}
+
+thead {
+  display: block;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+}
+
+td,
+th {
+  // border: 1px solid #ddd;
+  // font-size: 10px;
+  // padding: 6px;
+  // width: 13%;
+  // height: 70px;
+  border: 1px solid #ddd;
+  font-size: 9px;
+  padding: 2px;
+  width: 11.5%;
+  height: 70px;
+}
+
+.search {
+  padding: 0 10px;
+}
+
+.magento {
+  padding-right: 0;
+  padding-left: 0;
+  border-right: 2px solid;
+  .header-custm {
+    background-color: $orange;
+    button {
+      color: $orange;
+    }
+  }
+
+  .search_row {
+    button {
+      color: $orange;
+    }
+  }
+
+  .magento-header {
+    background-color: $orange;
+  }
+  .search {
+    background-color: $orange;
+  }
+
+  table {
+    input[type="checkbox"]:checked + .select-row {
+      background: $orange;
+    }
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $orange;
+  }
+}
+.magento th:nth-child(2),
+.magento td:nth-child(2) {
+  width: 12.5%;
+}
+.magento th:nth-child(7),
+.magento td:nth-child(7) {
+  width: 7%;
+}
+
+.magento th:nth-child(9),
+.magento td:nth-child(9) {
+  width: 12%;
+}
+
+.qbo {
+  padding-right: 0;
+  padding-left: 0;
+  border-right: 2px solid;
+
+  .header-custm {
+    background-color: $green;
+    button {
+      color: $green;
+    }
+  }
+
+  .search_row {
+    button {
+      color: $green;
+    }
+  }
+
+  .qbo-header {
+    background-color: $green;
+    .action {
+      float: right;
+      background-color: #b8d2e9;
+      height: 100%;
+      width: 25.5%;
+    }
+  }
+  .search {
+    background-color: $green;
+  }
+
+ 
+  table {
+    input[type="checkbox"]:checked + .select-row {
+      background: $green;
+    }
+    td,
+    th {
+      width: 16.66%;
+    }
+    td.action {
+      padding-top: 0;
+      padding-bottom: 0;
+      border-left: 2px solid;
+      .match-btn {
+        width: 100%;
+        height: 100%;
+        margin-bottom: 0;
+        font-weight: 600;
+        padding: 0;
+      }
+    }
+  }
+  ::-webkit-scrollbar-thumb {
+    background: $green;
+  }
+}
+.qbo th:nth-child(4),
+.qbo td:nth-child(4) {
+  width: 8% !important;
+}
+
+.action {
+  padding-right: 0;
+  padding-left: 0;
+
+  .action-header {
+    background-color: #9bc2e6;
+  }
+
+  table {
+    td {
+      padding: 0;
+    }
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #9bc2e6;
+  }
+}
+
+.date-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-date-picker {
+  width: 70px;
+  font-size: 8px;
+  height: 30px;
+}
+
+tr.theading th {
+  border-bottom: 0;
+  // height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+tr.filter th {
+  border-top: 0;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  input[type="text"] {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    height: 28px;
+    background: transparent;
+    font-weight: 500;
+    &:hover {
+      border: 2px solid;
+    }
+  }
+  select#payment_type {
+    font-size: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 0;
+    height: 28px;
+    background: transparent;
+    font-weight: 500;
+    &:hover {
+      border: 2px solid;
+    }
+  }
+}
+
+.search_row {
+  margin: 0;
+  padding: 0;
+  height: 30px !important;
+  border: 2px solid $dimBlack;
+  td {
+    margin: 0;
+    padding: 0;
+    height: 30px !important;
+  }
+  button {
+    margin: 0;
+    border: 1px solid $dimBlack;
+  }
+  input {
+    margin: 0;
+    padding: 0 10px;
+    border: 0;
+  }
+  .near_search {
+    background-color: $dimBlack;
+  }
+}
+
+.updat_btn_box {
+  margin: 0;
+  padding: 0;
+  button {
+    margin: 0;
+    font-size: 10px;
+    width: 65px;
+    height: 65px;
+    width: 100%;
+    height: 100%;
+    white-space: normal;
+    padding: 0;
+  }
+}
+
+.qbo .mat-date-picker {
+  width: 70px;
+  font-size: 8px;
+  height: 30px;
+}
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+tr.header-custm th {
+  height: 20px !important;
+  text-align: center !important;
+  font-size: 12px;
+  padding: 0;
+}
+.header-custm {
+  height: 25px !important;
+  border: 2px solid;
+
+  .action {
+    background-color: $dimBlack;
+    color: $blue;
+  }
+}
+
+/* 10-09-2019 CSS */
+
+// .qbo th:nth-child(4), .qbo td:nth-child(1) {
+//   width: 13.33% !important;
+// }
+// .qbo th:nth-child(4), .qbo td:nth-child(2) {
+//   width: 8% !important;
+// }
+// .qbo th:nth-child(4), .qbo td:nth-child(3) {
+//   width: 8% !important;
+// }
+// .qbo th:nth-child(4), .qbo td:nth-child(4) {
+//   width: 8% !important;
+// }
+// .qbo th:nth-child(4), .qbo td:nth-child(5) {
+//   width: 24% !important;
+// }
+
+// .qbo-new th:nth-child(1){
+//  width:13.33% !important;
+// }
+// .qbo-new th:nth-child(2){
+//   width:8% !important;
+// }
+// .qbo-new th:nth-child(3){
+//   width:8% !important;
+// }
+// .qbo-new th:nth-child(4){
+//   width:8% !important;
+// }
+// .qbo-new th:nth-child(5){
+//   width:24% !important;
+// }
+
+.new-css-width {
+  width: 16% !important;
+}
+
+.new-css-width-1 {
+  width: 9% !important;
+}
+.new-css-width-2 {
+  width: 15% !important;
+  white-space: nowrap;
+}
+.new-css-width-3 {
+  width: 9% !important;
+}
+.new-css-width-4 {
+  width: 30% !important;
+}
+
+.dimrows {
+  background-color: #cccccc;
+}
+
+.model-custom {
+  
+    width: 60%;
+    margin: 15% 20%;
+  
+}
+.fonsize{
+  font-size: 9px;
+}
+
+
+//my css
+
+.checkmarck:after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  position: relative;
+  transform: rotate(45deg);
+  left: 4px;
+  }

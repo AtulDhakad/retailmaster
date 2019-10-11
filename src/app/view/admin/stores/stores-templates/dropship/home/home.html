@@ -1,0 +1,60 @@
+<!-- right sidebar -->
+<div class="col-md-8 col-sm-8 right-sidebar">
+    <div class="row p-row">
+        <div class="space">
+
+            <div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let product of products;">
+
+                <!--  -->
+                <!-- USE JQUERY TO HIDE AND SHOW BUTTONS AND TO PUT SCROLL ANIMATIONS.... -->
+                <!--  -->
+                <div class="productbox">
+                    <div class="p-img-h" (click)="onProductClick(product)">
+                        <a><img [src]="product.image" class="img-responsive"></a>
+                    </div>
+                    <div class="p-actions">
+                        <a class="btn btn-success btn-affect btm-sm" (click)="$event.quick = true; quickViewProduct = product;" data-toggle="modal" data-target="#quickView"role="button"><i class="fa fa-eye" aria-hidden="true"></i>Quick View</a>
+                        <a (click)="addtoCart(product)" class="btn btn-success btn-affect  btm-sm" role="button"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Add to Cart</a>
+                    </div>
+                    <h3 class="product-title"><a class="product-title-link">{{product.name}}</a></h3>
+                        <span class="product-text">RM{{product.price | number : '1.2-2'}}</span>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-dropship-store-cart-panel [baseURL]="baseURL" [cartItems] = "cartItems" 
+(onRemoveCartItem)="removeItem($event)" (onEditProductCartItem)="editProductCartItem($event)" (onOpenView)="openView($event)"></app-dropship-store-cart-panel>
+
+<div class="modal fade" id="quickView" tabindex="-1" role="dialog" aria-labelledby="quickView">
+  <div class="quick-view-container">
+    <img [src]="quickViewProduct.image" class="img-responsive" style="margin:0 auto">
+    <h1 class="quick-view-head">{{quickViewProduct.name}}</h1>
+    <h3 class="st-font quick-view-price">{{quickViewProduct.price}}</h3>
+    <p class="quick-view-detail mt-20">
+        {{quickViewProduct.description}}
+    </p>
+
+    <h3 class="quick-view-quantity" style="margin-bottom:17px">Quantity</h3>
+    <div style="clear:both"></div>
+    <div>
+        <div class="input-group number-spinner text-spinner-num"  >
+            <span class="input-group-btn">
+                <button class="btn btn-default text-spinner-btn" data-dir="dwn" (click)="decrement()"><span class="glyphicon glyphicon-minus"></span></button>
+            </span>
+            <input type="text" class="form-control text-center"  [(ngModel)]="quantity">
+            <span class="input-group-btn">
+                <button class="btn btn-default text-spinner-btn" data-dir="up" (click)="increment()"><span class="glyphicon glyphicon-plus"></span></button>
+            </span>
+        </div>
+    </div>
+
+    <div class="mt-50">
+        <input type="submit" value="ADD TO CART" class="btn btn-default cart-checkout" data-dismiss="modal" (click)="addtoCart(quickViewProduct)" >
+    </div>
+
+    <div (click)="viewProduct()" data-dismiss="modal" >
+        <input type="submit" value="VIEW PRODUCT" class="btn btn-default cart-view">
+    </div>
+</div>
+</div>

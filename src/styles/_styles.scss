@@ -1,0 +1,21 @@
+// @import url('https://fonts.googleapis.com/css?family=Raleway');
+@import "variables";
+@import "mixins";
+
+@import "common/style";
+
+// start components
+@import "global";
+@import "components/sidebar";
+@import "components/navbar";
+@import "components/login";
+@import "components/channels";
+@import "components/stores";
+@import "components/dashboard";
+@import "components/sys-admin";
+@import "components/settings";
+@import "components/finance";
+
+
+// Stores templates
+@import "templates/so-style";

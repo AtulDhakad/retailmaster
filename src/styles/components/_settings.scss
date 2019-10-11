@@ -1,0 +1,70 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 999999999999;
+  left: 0px;
+  top: 0px;
+  background: rgba(255,255,255,0.5);
+  img {
+    width: 50px;
+    height: 50px;
+    opacity: 0.8;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.loaderScreen {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 999999999999;
+  left: 0px;
+  top: 0px;
+  background: rgba(255,255,255,0.5);
+  img {
+    width: 50px;
+    height: 50px;
+    opacity: 0.8;
+    position: absolute;
+    top: 30%;
+    transform: translateY(-50%);
+  }
+}
+
+.error-text{
+  color: #cc3f44;
+}
+
+.table-permissions tr td{
+  color: #000;
+}
+span.checkbox-container {
+    width: 16px;
+    display: inline-block;
+    font-size: 18px;
+    color: #438eb9;
+    line-height: 18px;
+}
+
+span.checkbox-container span {
+    cursor: pointer;
+}
+.tree-node-content{
+  margin-left: 46px !important; 
+}
+.no-icon-holder {
+  font-size: 24px;
+  text-align: center;
+  width: 100%;
+  display: block;
+  background: #979898;
+  border-radius: 12px;
+  color: #FFF;  
+}

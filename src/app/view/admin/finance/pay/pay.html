@@ -1,0 +1,192 @@
+<app-finance-header [enableActions]="true"></app-finance-header>
+<div class="container mt-40 con-con">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 clr-right">
+                            <p class="label-002 ad-left">
+                                Due date next
+                            </p>
+                        </div>
+                        <div class="col-md-1 col-sm-1 clr-left">
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001 margin-minus" id="sel1">
+                                    <option>3</option>
+                                    <option>6</option>
+                                    <option>10</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-1 clr-left">
+                            <p class="label-002 mob-span push-left">
+                                days
+                            </p>
+                        </div>
+                        <div class="col-md-2 col-sm-2 clr-left clr-right">
+                            <div class="form-group p-relative">
+                                <input type="text" placeholder="12-Aug-2017" class="form-control inpt-001" />
+                                <i class="fa fa-calendar calendar-icon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-1">
+                            <p class="label-001">to</p>
+                        </div>
+                        <div class="col-md-2 col-sm-2 clr-left clr-right">
+                            <div class="form-group p-relative">
+                                <input type="text" placeholder="12-Aug-2017" class="form-control inpt-001" />
+                                <i class="fa fa-calendar calendar-icon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-1">
+                            <input type="submit" class="btn btn-default btn-001" value="Go" />
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-md-4 col-sm-12 clr-001">
+                    <div class="row">
+
+                        <div class="col-md-3 col-sm-3">
+                            <p class="label-003">Status</p>
+                        </div>
+                        <div class="col-md-3 col-sm-2 clr-left">
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001" id="sel1">
+                                    <option>Approved</option>
+                                    <option>Pending</option>
+                                    <option>Approved</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-5 clr-left">
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001" id="sel1">
+                                    <option>Sort by due date</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-10 con-btm con-con">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+                <table class="table tb-003">
+                    <tr class="tb-002-td-01">
+                        <td>SUPPLIER</td>
+                        <td>DUE DATE</td>
+                        <td>BILL DATE</td>
+
+                        <td>BILL NO</td>
+                        <td class="ri-align">BILL AMOUNT</td>
+                        <td class="ri-align">BALANCE DUE</td>
+                        <td class="ri-align">APPROVED AMOUNT</td>
+
+                        <td>PAY BY</td>
+                        <td>PAID</td>
+                        <td>REFERENCE</td>
+                        <td>ACTION</td>
+
+
+                    </tr>
+                    <tr class="border-line-01">
+                        <td>Gulam Stationery</td>
+                        <td>12-Aug-17 </td>
+                        <td>12-Jul-17 </td>
+
+                        <td class="blue-td">Gul8232</td>
+                        <td class="ri-align">120.00 </td>
+                        <td class="ri-align">150.11 </td>
+                        <td class="ri-align">190.00 </td>
+
+                        <td>
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001 edit-span-01" id="sel1">
+                                    <option>eTransfer</option>
+                                    <option>mobicash</option>
+                                    <option>eTransfer</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default checbox-st">
+                                    <input type="checkbox">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control inpt-001 width-set-01">
+
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001 edit-span" id="sel1">
+                                    <option>edit</option>
+                                    <option>add</option>
+                                    <option>del</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Telekom Malaysia</td>
+                        <td>12-Aug-17 </td>
+                        <td>12-Jul-17 </td>
+
+                        <td class="blue-td">Gul8239272</td>
+                        <td class="ri-align">120.00 </td>
+                        <td class="ri-align">150.11 </td>
+                        <td class="ri-align">12.50 </td>
+
+                        <td>
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001 edit-span-01" id="sel1">
+                                    <option>eTransfer</option>
+                                    <option>mobicash</option>
+                                    <option>eTransfer</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default checbox-st">
+                                    <input type="checkbox">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control inpt-001 width-set-01">
+
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001 edit-span" id="sel1">
+                                    <option>edit</option>
+                                    <option>add</option>
+                                    <option>del</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

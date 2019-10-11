@@ -1,0 +1,33 @@
+export class PaymentProcess {
+  id: number;
+  entity_id: string = '';
+  order_id: string = '';
+  value: string = '';
+  name: string = '';
+  date: Date = null;
+  time: Date = null;
+  bankId: string = '';
+  chequeNo: string = '';
+  orderNo: string = '';
+  userId: string = '';
+  cardType: string = '';
+  discountVoucherNo: string = '';
+  giftVoucherNo: string = '';
+  cardApprovalCode: string = '';
+  enteredAmt: number;
+  savedAmt: number = 0;
+  pendingAmt: number = 0;
+  showDate: boolean = false;
+  showTime: boolean = false;
+  showBankCombo: boolean = false;
+  showCardTypeCombo: boolean = false;
+  showText: boolean = false;
+  showChequeNo: boolean = false;
+  showChequeDate: boolean = false;
+  showPoDate: boolean = false;
+  showPoNo: boolean = false;
+  showDiscVoucherNo: boolean = false;
+  showGiftVoucerNo: boolean = false;
+  enable: boolean = false;
+  timeString: string = '';
+}

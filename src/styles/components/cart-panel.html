@@ -1,0 +1,93 @@
+<!-- left sidebar -->
+<div class="col-md-3 col-sm-3 left-sidebar">
+
+    <div class="row">
+        <div class="col-md-12 cart-holder">
+          <ul class="cart-table">
+
+            <li *ngFor="let item of items;">
+              <ul>
+                <li class="c-img"><a data-toggle="modal" data-target="#cartPanelProduct"><img [src]="item.product.img" class="img-responsive"/></a></li>
+                <li class="c-info">
+                  <div class="col-md-12 title">
+                    <span class="heading">{{item.product.name}}</span>
+                    <span class="action-btn"><a><img src="assets/so-images/cart_cross.png"/></a></span>
+                  </div>
+                  <div class="col-md-12 actions">
+                    <span class="cart-chip chip-black">{{item.product.price}}</span>
+                    <span class="cart-chip chip-black">{{item.product.price_rm}}</span>
+                    <span class="cart-chip chip-yellow">{{item.product.price_rm2}}</span>
+                    <span class="action-btn" style="margin-top: -4px;">
+                      <a data-toggle="modal" data-target="#cartPanelProduct">
+                        <img src="assets/so-images/cart_edit.png"/>
+                      </a>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
+
+          <div>
+            <button type="button" [disabled]="items.length ? '' : 'disabled'" (click)="navigate('/cart')" class="btn btn-default checkout-btn btn-grey mb-50">VIEW CART</button>
+          </div>
+          <div>
+            <button type="button" [disabled]="items.length ? '' : 'disabled'" (click)="navigate('/checkout')" class="btn btn-default checkout-btn mb-50">PROCEED TO CHECK OUT</button>
+          </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="cartPanelProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="product-popup-modal">
+    <div class="popup-title">My product name</div>
+    <div class="popup-img">
+      <img src="assets/so-images/product-04.jpg" class="img-responsive"/>
+    </div>
+    <div class="input-group number-spinner text-spinner-num counters" style="width: 100%;">
+        <span class="input-group-btn left-btn">
+            <button class="btn btn-default text-spinner-btn" data-dir="dwn"><span class="glyphicon glyphicon-minus"></span></button>
+        </span>
+        <input type="text" class="form-control text-center" value="1">
+        <span class="input-group-btn right-btn">
+            <button class="btn btn-default text-spinner-btn" data-dir="up"><span class="glyphicon glyphicon-plus"></span></button>
+        </span>
+    </div>
+    <div class="action-btns text-center">
+      <a class="btn btn-gray" [class.active]="option1 === 1" (click)="option1 = option1 == 1 ? undefined : 1; option2 = undefined">Custom price</a>
+      <a class="btn btn-gray" [class.active]="option2 == 1 || option2 == 2" (click)="option2 = option2 == 1 ? undefined : 1; option1 = undefined">Discount</a>
+    </div>
+    <div>
+      <div class="action-div" [class.show-actions]="option1 == 1">
+        <div class="name-div">
+          Amount
+        </div>
+        <div class="input-div" style="width: 72%">
+          <div class="input-group">
+            <input type="text" class="form-control">
+            <span class="input-group-addon" [class.active]="option1 === 1">$</span>
+          </div>
+        </div>
+      </div>
+      <div class="action-div" [class.show-actions]="option2 == 1 || option2 == 2">
+        <div class="name-div">
+          {{ option2 === 1 ? 'Amount' : 'Percentage' }}
+        </div>
+        <div class="input-div" style="width: 72%">
+          <div class="input-group">
+            <input type="text" class="form-control">
+            <span class="input-group-addon" [class.active]="option2 === 1" (click)="option2 = 1">$</span>
+            <span class="input-group-addon" [class.active]="option2 === 2" (click)="option2 = 2">%</span>
+          </div>
+        </div>
+      </div>
+      <div class="action-btns text-center">
+        <a class="btn btn-gray" data-dismiss="modal">Save</a>
+        <a class="btn btn-gray" data-dismiss="modal">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>

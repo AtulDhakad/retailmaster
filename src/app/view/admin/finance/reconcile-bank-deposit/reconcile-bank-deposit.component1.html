@@ -1,0 +1,156 @@
+<div class="container-fluid">
+    <div class="row main-row">
+  
+      <div class="col-md-8 magento px-0">
+        <header class="magento-header">
+          Sales order payment from magento
+          <button class="refresh">Refresh</button>
+        </header>
+        <div class="search-bar">
+          <input type="search" placeholder="Search..." class="form-control search">
+        </div>
+  
+        <table class="magento-table w-100">
+          <thead>
+            <tr class="theading">
+              <th>Order Date
+                                    
+              </th>
+              <th>Order ID</th>
+              <th>Customer Name</th>
+              <th class="text-right">Order amount</th>
+              <th>Payment method</th>
+              <th>Payment date & time</th>
+              <th class="text-right">Amount paid</th>
+              <th style="width:50px" class="text-center">Match with Bank deposit</th>
+            </tr>
+            <tr class="filter">
+              <th>
+                  <div class="date-picker">
+                      <mat-form-field class="mat-date-picker" appearance="outline">
+                          <input matInput [matDatepicker]="order_date">
+                          <mat-datepicker-toggle matSuffix [for]="order_date"></mat-datepicker-toggle>
+                          <mat-datepicker #order_date></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+              </th>
+              <th>
+                <input type="text" class="form-control">
+              </th>
+              <th>
+                <input type="text" class="form-control">
+              </th>
+              <th>
+                <input type="text" class="form-control">
+              </th>
+              <th>
+                <select name="payment_type" id="payment_type" class="form-control">
+                  <option value="none"></option>
+                  <option value="checkmo">Check/money order</option>
+                  <option value="">Cash on delivery</option>
+                  <option value="">Bank Transfer</option>
+                  <option value="">	Purchase Order</option>
+                  <option value="">Zero Subtotal Checkoutr</option>
+                </select>
+              </th>
+              <th>
+                  <div class="date-picker">
+                      <mat-form-field class="mat-date-picker" appearance="outline">
+                          <input matInput [matDatepicker]="payment_date">
+                          <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                          <mat-datepicker #payment_date></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+              </th>
+              <th>
+                  <input type="text" class="form-control">
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let mg2 of magento">
+              <td>{{mg2.order_date | date}}</td>
+              <td>{{mg2.order_id}}</td>
+              <td>{{mg2.firstname}} {{mg2.lastname}}</td>
+              <td class="text-right">{{mg2.order_amount | currency }}</td>
+              <td>{{mg2.payment_method}}</td>
+              <td>25-Feb-19 @ 15:32</td>
+              <td class="text-right">{{mg2.amount_paid | currency}}</td>
+              <td class="text-center">
+                <label>
+                  <input class="hide" type="checkbox" (change)="onSelectM2(mg2)">
+                  <div class="select-row"></div>
+                </label>
+              </td>
+            </tr>              
+           
+          </tbody>
+        </table>
+  
+      </div>
+  
+      <div class="col-md-4 qbo px-0">
+        <header class="qbo-header">
+          Bank deposits for QBO
+          <span class="action">Action</span>
+          <button class="refresh">Refresh</button>
+          
+        </header>
+        <div class="search-bar">
+          <input type="search" placeholder="Search..." class="form-control search">
+        </div>
+  
+        <table class="qbo-table w-100">
+          <thead>
+            <tr class="theading">
+              <th class="text-center">Match with order payment</th>
+              <th class="text-right">Deposit amount</th>
+              <th>Deposit date</th>
+              <th>Deposit time</th>
+              <th style="border-left: 2px solid;"></th>                    
+            </tr>
+            <tr class="filter">
+              <th></th>
+              <th>
+                <input type="text" class="form-control">
+              </th>
+              <th >
+                  <div class="date-picker date-piker-custom">
+                      <mat-form-field class="mat-date-picker" appearance="outline">
+                          <input matInput [matDatepicker]="deposit_date_time">
+                          <mat-datepicker-toggle matSuffix [for]="deposit_date_time"></mat-datepicker-toggle>
+                          <mat-datepicker #deposit_date_time></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+              </th>
+              <th></th>
+              <th style="border-left: 2px solid;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let qbo of qboData" >
+              <td class="text-center">
+                <label>
+                  <input class="hide" type="checkbox" (change)="onSelectQbo(qbo)">
+                  <div class="select-row"></div>
+                </label>
+              </td>
+              <td class="text-right">{{qbo.amount_received}}</td>
+              <td>{{qbo.date | date:'	dd-MMM-yy'}}</td>
+              <td>{{qbo.timestamp ? ' @ '+qbo.timestamp : '' }}</td>
+              <td class="action"><button class="btn match-btn"  disabled>Match</button></td>     
+            </tr>         
+           
+            
+          </tbody>
+        </table>
+  
+      </div>  
+    
+  
+    </div>
+  
+  </div>
+  

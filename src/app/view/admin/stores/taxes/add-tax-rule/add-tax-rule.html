@@ -1,0 +1,120 @@
+<div class="row">
+	<div *ngIf="loading" class="loaderScreen">
+		<img src="assets/images/loading.gif">
+	</div>
+	<div class="col-sm-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Add tax rule</h3>
+			</div>
+			<div class="panel-body">
+
+				<div class="form-horizontal">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Country</label>
+
+						<div class="col-sm-6">
+							<select #cmbcountry
+								(change)="onSelectedCountry(cmbcountry.value)"
+								class="form-control">
+								<option *ngFor="let ct of countryList" [value]="ct.country_id">{{ct.country_name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 					<div class="form-group"> -->
+					<!-- 						<label class="col-sm-2 control-label" for="field-1">State/Province</label> -->
+
+					<!-- 						<div class="col-sm-6"> -->
+					<!-- 							<select #cmbRegion (change)="onSelectedRegion(cmbRegion.value)" -->
+					<!-- 								class="form-control"> -->
+					<!-- 								<option *ngFor="let region of regionsList" -->
+					<!-- 									[value]="region.region_id">{{region.default_name}}</option> -->
+					<!-- 							</select> -->
+					<!-- 						</div> -->
+					<!-- 					</div> -->
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="txtpostcode">Post
+							code</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="txtpostcode"
+								[(ngModel)]="newTaxRule.tax_postcode" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Tax
+							name</label>
+
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Tax name" [(ngModel)]="newTaxRule.tax_name"
+								name="Taxname">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Tax
+							rate percent</label>
+
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Tax rate percent" [(ngModel)]="newTaxRule.tax_rate">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Customer
+							tax class</label>
+
+						<div class="col-sm-6">
+							<select class="form-control" #cmbCustomerTaxClass
+								(change)="onSelectedCustomerTaxClass(cmbCustomerTaxClass.value)"
+								class="form-control">
+								<option *ngFor="let ctc of customerTaxClasses"
+									[value]="ctc.class_name">{{ctc.class_name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Product
+							tax class</label>
+
+						<div class="col-sm-6">
+							<select class="form-control" #cmbProductTaxClass
+								(change)="onSelectedProductTaxClass(cmbProductTaxClass.value)"
+								class="form-control">
+								<option *ngFor="let ptc of productTaxClasses"
+									[value]="ptc.class_name">{{ptc.class_name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Status</label>
+						<div class="col-sm-6">
+							<select class="form-control" #selectStatus *ngIf="newTaxRule"
+								(change)="selectedStatus(selectStatus.value)">
+								<option *ngFor="let st of statusArrList" [value]="st.id">{{st.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-sm-2"></div>
+					<div class="col-sm-6 inline-field"
+						style="padding-left: 4px !important">
+						<div class="col-xs-6 inline-field">
+							<a class="btn btn-white" (click)="onSaveClick()">Save</a> <a
+								class="btn btn-warning" (click)="closeAddTaxRule()">Cancel</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>

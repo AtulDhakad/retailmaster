@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default panel-white">
+      <div class="panel-heading">
+        <h3 class="panel-title">Download bank deposits from QBO</h3>
+      </div>
+      <div class="panel-body">
+        <h4>Fetch all QBO bank deposits</h4>
+        <form class="form-custom form-horizontal" novalidate="" [formGroup]="dateRange">
+          
+          <div class="form-group">            
+            <div class="col-sm-5 col-xs-6">
+                <mat-form-field class="w-100">
+                    <input matInput [matDatepicker]="from" placeholder="From" formControlName="fromDate">
+                    <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+                    <mat-datepicker #from></mat-datepicker>
+                </mat-form-field>              
+            </div>         
+            <div class="col-sm-5 col-xs-6">
+                <mat-form-field class="w-100">
+                    <input matInput [matDatepicker]="to"  placeholder="To" formControlName="toDate">
+                    <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+                    <mat-datepicker #to></mat-datepicker>
+                </mat-form-field>              
+            </div>
+            <div class="col-sm-2 col-xs-12 text-right">
+              <button class="btn btn-success" (click)="onSubmit()">Download</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="field-3"></label>
+
+          </div>
+        </form>
+        <hr />
+
+        <div class="result">
+          <div class="text-right">
+              <button class="btn btn-success" [disabled]="toBeDelete.length===0" (click)="onUpdate()">Update</button>
+          </div>
+            
+            <div class="table-responsive">
+                <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Qbdpid</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th class="right">Type</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr *ngFor="let data of tableData;let i=index"
+                  [ngClass]="{'strikeout': toBeDelete.indexOf(data.qbdpid) > -1 }"
+                   >
+                    <td>{{data.id}}</td>
+                    <td>{{data.qbdpid}}</td>
+                    <td>{{data.date | date :'dd-MMM-yyyy' }}</td>
+                    <td>{{data.timestamp?data.timestamp:''}}</td>
+                    <td>{{data.amount_received}}</td>
+                    <td>{{data.description}}</td>
+                    <td class="text-right">{{data.type}}</td>
+                    <td><i (click)="onDelete(data)" [ngStyle]="{'opacity': toBeDelete.indexOf(data.qbdpid) > -1 ? .5 : 1 }" class="fa fa-trash-o delete_icon"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="loading" class="loaderScreen ng-star-inserted"><img src="assets/images/loading.gif"></div>

@@ -1,0 +1,273 @@
+
+  <ng-template #template>
+    <div class="modal-body text-center ">
+      <p> Are you sure to confirm Delete?</p>
+      <button type="button" class="btn btn-danger" (click)="confirmDelete()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="modalRef.hide()">No</button>
+    </div>
+  </ng-template>
+  <div class="panel panel-default">
+<div class="container-fluid">
+  <div class="row main-row">
+  
+<div class="panel-heading"><h3 class="panel-title">Match bank deposits with orders</h3></div>
+    <div class="col-md-7 magento px-0">
+      <!-- <header class="magento-header">
+              Sales order payment from magento
+              <button class="refresh">Refresh</button>
+            </header> -->
+
+      <table class="magento-table w-100">
+        <thead>
+          <tr class="header-custm">
+            <th colspan="8">Magento order payments</th>
+            <th><button (click)="filterM2Data()" class="btn btn-primary btn-block refresh">Refresh</button></th>
+          </tr>
+          <tr class="theading">
+            <th class="text-center">Order Date</th>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th class="text-right">Order amount</th>
+            <th>Payment method</th>
+            <th class="text-center">Payment date</th>
+            <th class="text-center">Payment time</th>
+            <th class="text-right">Amount paid</th>
+            <th style="width:50px" class="text-center">Match with Bank deposit</th>
+          </tr>
+          <tr class="search_row">
+            <td colspan="8">
+              <input type="search"  class="form-control search">   
+            </td>
+            <td>
+              <button class="btn btn-primary btn-block search_btn">Search</button>
+            </td>
+          </tr>
+          <tr class="filter">
+            <th>
+              <div class="date-picker">
+                <mat-form-field class="mat-date-picker" appearance="outline">
+                  <input matInput [matDatepicker]="order_date" (dateInput)="dateChange('order_date', $event)"
+                    (dateChange)="dateChange('order_date', $event)">
+                  <mat-datepicker-toggle matSuffix [for]="order_date"></mat-datepicker-toggle>
+                  <mat-datepicker #order_date></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </th>
+            <th>
+              <input type="text" class="form-control" [(ngModel)]="m2orderId">
+            </th>
+            <th>
+              <input type="text" class="form-control" [(ngModel)]="m2customerNameFilter">
+            </th>
+            <th>
+              <input type="text" class="form-control" [(ngModel)]="m2OrderAmountFilter">
+            </th>
+            <th>
+              <select name="payment_type" id="payment_type" class="form-control" [(ngModel)]="m2paymentMethodFilter">
+                <option value=""></option>
+                <option value="checkmo">Check/money order</option>
+                <option value="">Cash on delivery</option>
+                <option value="">Bank Transfer</option>
+                <option value=""> Purchase Order</option>
+                <option value="">Zero Subtotal Checkoutr</option>
+              </select>
+            </th>
+            <th class="text-center">
+              <div class="date-picker">
+                <mat-form-field class="mat-date-picker" appearance="outline">
+                  <input matInput [matDatepicker]="payment_date" (dateInput)="dateChange('payment_date', $event)"
+                    (dateChange)="dateChange('payment_date', $event)">
+                  <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                  <mat-datepicker #payment_date></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="text-center">
+              <input type="text" class="form-control" [(ngModel)]="m2PaymentTimeFilter">
+            </th>
+            <th>
+              <input type="text" class="form-control" [(ngModel)]="m2AmountPaidFilter">
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr  *ngFor="let mg2 of magentoFiltered | gridFilter: 
+            { 
+              order_id: m2orderId, 
+              payment_method: m2paymentMethodFilter,
+              firstname:m2customerNameFilter,
+              order_amount:m2OrderAmountFilter,
+              amount_paid:m2AmountPaidFilter
+            
+            }"    [ngClass]="{'dimrows':isThisMatchedMg2(mg2) || mg2.matching_id===mg2.id}" >
+
+            <td class="text-center">{{mg2.order_date | date:'dd-MMM-yyy'}}</td>
+            <td>{{mg2.order_id}}</td>
+            <td>{{mg2.firstname}} {{mg2.lastname}}</td>
+            <td class="text-right">{{mg2.order_amount | currency }}</td>
+            <td>{{mg2.payment_method}}</td>
+            <td class="text-center">25-Feb-2019</td>
+            <td class="text-center">15:32</td>
+            <td class="text-right" >{{mg2.amount_paid | currency}}</td>
+            <td class="text-center">
+              <label *ngIf="mg2.matching_id===mg2.id; else elsecheckm2bol">
+                <input class="hide" [disabled]="true"  [checked]="true" type="checkbox" (change)="onSelectM2(mg2)">
+                <div class="select-row checkmarck"></div>
+              </label>
+              <ng-template #elsecheckm2bol>
+                  <label>
+                 <input class="hide" [checked]="(matchedQbo.length===0 || !isThisMatchedMg2(mg2)  ) ? false : true" type="checkbox" (change)="onSelectM2(mg2)">
+                  <div class="select-row"></div>
+          
+                </label>
+              </ng-template>
+
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="col-md-5 qbo px-0">
+      <!-- <header class="qbo-header">
+              <button class="refresh-1">Refresh</button>
+              <span>Bank deposits for QBO</span>
+              <span class="action">Action</span>             
+            </header>           -->
+
+      <table class="qbo-table w-100">
+        <thead>
+          <tr class="header-custm">
+            <!-- (click)="getQBOData()" -->
+            <th><button (click)="RefreshOBO()" class=" btn btn-primary btn-block refresh">Refresh</button></th>
+            <th colspan="4">QBO bank deposits</th>
+
+            <th class="action">Action</th>
+          </tr>
+          <tr class="theading qbo-new">
+            <th class="new-css-width text-center">Match with order payment</th>
+            <th class="text-right new-css-width-1">Deposit amount</th>
+            <th class="text-center new-css-width-2">Deposit date</th>
+            <th class="text-center new-css-width-3">Deposit time</th>
+            <th>Bank description </th>
+            <th class="updat_btn_box" style="border-left: 2px solid;">
+              <button class="btn btn-info" (click)="matchNow()" [disabled]="(allmatchButton) ? true : false">Update unMatched records</button>
+            </th>
+          </tr>
+          <tr class="search_row qbo-new-1">
+            <td>
+              <button class="btn btn-primary btn-block search_btn">Search</button>
+            </td>
+            <td colspan="4">
+              <input type="search"   class="form-control search">
+            </td>
+            <td style="border-left: 2px solid;" class="near_search"></td>
+          </tr>
+          <tr class="filter qbo-new-2">
+            <th class="new-css-width"></th>
+            <th class="new-css-width-1">
+              <input [(ngModel)]="depositeAmount" type="text" class="form-control">
+            </th>
+            <th class="text-center new-css-width-2">
+              <div class="date-picker date-piker-custom">
+                <mat-form-field class="mat-date-picker" appearance="outline">
+                  <input matInput [matDatepicker]="deposit_date" (dateInput)="dateChange('deposit_date', $event)"
+                    (dateChange)="dateChange('deposit_date', $event)">
+                  <mat-datepicker-toggle matSuffix [for]="deposit_date"></mat-datepicker-toggle>
+                  <mat-datepicker #deposit_date></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="text-center new-css-width-3">
+              <input [(ngModel)]="depositeTime" type="text" class="form-control">
+            </th>
+            <th class="new-css-width-4">
+              <input [(ngModel)]="depositDescription" type="text" class="form-control">
+            </th>
+            <th style="border-left: 2px solid;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let qbo of qboFiltered  | gridFilter: {
+              amount_received: depositeAmount,
+              timestamp:depositeTime,
+              description:depositDescription
+            };let idx=index" [ngClass]="{'dimrows':isThisMatched(qbo) || qbo.matched_with_order==='yes'}"  >
+            <!--dimrows-->
+            <td class="text-center new-css-width ">
+              <label *ngIf="qbo.matched_with_order==='yes'; else elsecheckbol">
+                  <input class="hide" [checked]="true" [disabled]="true" type="checkbox" (change)="onSelectQbo(qbo)">
+                  <div class="select-row checkmarck"></div>
+              </label>
+              <ng-template #elsecheckbol>
+                <label>
+                    <input class="hide" [checked]="(matchedQbo.length===0 || !isThisMatched(qbo) ) ? false : true" type="checkbox" (change)="onSelectQbo(qbo)">
+                    <div class="select-row "></div>
+        
+              </label>
+            </ng-template>
+            </td>
+            <td class="text-right new-css-width-1" >{{qbo.amount_received | currency }}</td>
+            <td class="text-center new-css-width-2">{{qbo.date | date:'dd-MMM-yyy'}}</td>
+            <td class="text-center new-css-width-3">{{qbo.timestamp }}</td>
+            <td class="new-css-width-4">{{qbo.description}}</td>
+
+            <td class="action">
+
+              <div class="btn-group" [class.open]="idx===dropBtn">
+
+            <div *ngIf="isThisMatched(qbo) || qbo.matched_with_order==='yes'; then thenBlock else elseBlock"></div>
+                  <!-- [disabled]="( matchedQbo.length===0 || !isThisMatched(qbo) ) ? true : false" -->
+          <ng-template #thenBlock><button [disabled]="(qbo.matched_with_order==='yes' || !isThisMatched(qbo) ) ? false : true" type="button"
+            class="btn btn-info fonsize"  (click)="unmatchfn(qbo.id)" >Unmatch</button></ng-template>
+
+          <ng-template #elseBlock><button [disabled]="true" type="button"
+            class="btn btn-info">Match</button></ng-template>
+
+                
+                <button (click)="toggleBtn(idx)" type="button" class="btn btn-info dropdown-toggle"
+                  data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <!-- <li> <a (click)="toggleBtn(idx)">Match</a> </li>
+                  <li> <a (click)="toggleBtn(idx)">Unmatch</a> </li> -->
+                  <li> <a (click)="toggleBtn(idx, qbo, template)">Delete</a> </li>
+                </ul>
+              </div>
+              <!-- <button class="btn match-btn btn-info" 
+              [disabled]="( matchedQbo.length===0 || !isThisMatched(qbo) ) ? true : false">
+                Match
+              </button>   -->
+
+              <!-- <button (click)="matchNow()" *ngIf="1==1; else elseBlock" class="btn match-btn btn-info"
+              [disabled]="( matchedQbo.length===0 || !isThisMatched(qbo) ) ? true : false">
+                Match
+              </button> 
+
+              <ng-template #elseBlock>
+                  <button (click)="matchNow()"  class="btn match-btn btn-info"
+                  [disabled]="true">
+                  Unmatch
+                </button> 
+              </ng-template> -->
+
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+</div>
+<div *ngIf="loading" class="loaderScreen ng-star-inserted"><img src="assets/images/loading.gif"></div>

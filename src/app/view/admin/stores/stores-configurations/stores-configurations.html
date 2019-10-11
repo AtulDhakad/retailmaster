@@ -1,0 +1,85 @@
+<!-- Basic Setup -->
+<div *ngIf="loading" class="loaderScreen">
+	<img src="assets/images/loading.gif">
+</div>
+<div class="panel panel-default" *ngIf="isMainView">
+	<div class="panel-heading">
+		<h3 class="panel-title">Create/Edit/Delete Stores</h3>
+	</div>
+	<div class="panel-body">
+		<div style="text-align: right; padding-right: 50px">Before you
+			can create a store, you must first create a parent website.</div>
+		<div class="action-bar">
+			<div class="col-sm-8">
+				<div class="alert alert-success"
+					*ngIf="message.length > 0 ? true : false">
+					<b>{{message}}</b>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<a class="btn btn-white" (click)="openPanel('store_view', false)">Create
+					Store View</a> <a class="btn btn-white"
+					(click)="openPanel('store', false)">Create Store</a> <a
+					class="btn btn-warning" (click)="openPanel('website', false)">Create
+					Website</a>
+			</div>
+		</div>
+		<table class="table table-striped table-bordered" cellspacing="0"
+			width="100%">
+			<thead>
+				<tr>
+					<th>Web Site</th>
+					<th>Store</th>
+					<th>Root Category</th>
+					<th>Store View</th>
+				</tr>
+				<tr>
+					<th><input class="form-control" type="text"
+						[(ngModel)]="websiteString"></th>
+					<th><input class="form-control" type="text"
+						[(ngModel)]="nameString"></th>
+					<th><input class="form-control" type="text"
+						[(ngModel)]="rootCategoryString"></th>
+					<th><input class="form-control" type="text"
+						[(ngModel)]="viewString"></th>
+				</tr>
+			</thead>
+
+			<tbody *ngIf="storeconfigurationlist">
+				<tr
+					*ngFor="let sc of storeconfigurationlist   | filter : websiteString : nameString : viewString : rootCategoryString">
+					<td><span *ngIf="sc" (click)="openPanel('website', true, sc)">{{sc.websitename}}</span></td>
+					<td><span *ngIf="sc" (click)="openPanel('store', true, sc)">{{sc.groupname}}</span></td>
+					<td><span *ngIf="sc">{{sc.root_category}}</span></td>
+					<td><span *ngIf="sc"
+						(click)="openPanel('store_view', true, sc)">{{sc.storename}}</span></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</div>
+
+<app-stores-add-edit-website [isEdit]="isEdit" (onClose)="closePanel()"
+	*ngIf="isWebsite"
+	[selectedStoreConfiguration]="selectedStoreConfiguration"
+	[storeGroupList]="tempStoreGroups"
+	(onWebSiteDelete)="onWebsiteDelete($event)"
+	(onWebSiteUpdated)="onWebsiteUpdate($event)"
+	(onWebSiteSave)="onWebSiteSave($event)"></app-stores-add-edit-website>
+
+<app-stores-add-edit-store [isEdit]="isEdit" (onClose)="closePanel()"
+	*ngIf="isStore"
+	[selectedStoreConfiguration]="selectedStoreConfiguration"
+	(onSaveStoreGroupEvent)="onStoreGroupSave($event)"
+	(onUpdateStoreGroupEvent)="onUpdateStoreGroup($event)"
+	(onDeleteStoreGroupEvent)="onDeleteStoreGroup($event)"
+	[rootCategoryList]="rootCategoryList" [websitelist]="tempWebsites"></app-stores-add-edit-store>
+
+<app-stores-add-edit-store-view [isEdit]="isEdit"
+	(onClose)="closePanel()" *ngIf="isStore_view"
+	(onSaveStoreEvent)="onSaveStore($event)"
+	(onDeleteStoreEvent)="onDeleteStore($event)"
+	(onUpdateStoreEvent)="onUpdateStore($event)"
+	[selectedStoreConfiguration]="selectedStoreConfiguration"
+	[storeGroupList]="tempStoreGroups"></app-stores-add-edit-store-view>

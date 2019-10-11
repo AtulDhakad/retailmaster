@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Upload Bank Deposits
+        </div>
+        <div class="panel-body">
+          <ngx-dropzone #dropzone label="Click or Drop csv file here, Max: 2MB" [multiple]="false"
+            [maxFileSize]="2000000" [showPreviews]="true" [preserveFiles]="false"
+            [accept]="'.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"
+            (filesAdded)="onFilesAdded($event)" (filesRejected)="onFilesRejected($event)"
+            [disabled]="dataToSave && dataToSave.length>0"
+            >
+          </ngx-dropzone>
+          <div class="action_button text-right">
+            <button (click)="onReset(dropzone)" class="btn btn-danger mt-5">Reset</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12" *ngIf="dataToSave && dataToSave.length>0">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Data to Upload
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-small-font table-bordered table-striped data_to_upload_table">
+              <thead>
+                <tr>
+                  <th class="text-center">SN</th>
+                  <th class="text-center">Date</th>
+                  <th class="text-center">Time</th>
+                  <th class="text-right">Amount Received</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- <tr *ngFor="let data of csvData;let i=index">
+              <td>{{i}}</td>
+              <td>{{data.posting_date}}</td>
+              <td>{{data.memo1}}</td>
+              <td>{{data.credit}}</td>
+              <td>{{data.transaction_ref}}</td>             
+            </tr> -->
+                <tr *ngFor="let data of dataToSave;let i=index">
+                  <td class="text-center">{{i+1}}</td>
+                  <td class="text-center">{{data.date}}</td>
+                  <td class="text-center">{{data.timestamp}}</td>
+                  <td class="text-right">{{data.amount_received}}</td>
+                  <td>{{data.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="action_button text-right">
+              <button (click)="uploadData()" class="btn btn-success">Upload</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-12" *ngIf="uploadedData && uploadedData.length>0">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Uploaded Data for Review
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-small-font table-bordered table-striped data_to_upload_table">
+                <thead>
+                  <tr>
+                    <th class="text-center">SN</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Time</th>
+                    <th class="text-right">Amount Received</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>              
+                  <tr *ngFor="let data of uploadedData;let i=index">
+                    <td class="text-center">{{i+1}}</td>
+                    <td class="text-center">{{data.date}}</td>
+                    <td class="text-center">{{data.timestamp}}</td>
+                    <td class="text-right">{{data.amount_received}}</td>
+                    <td>{{data.description}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>           
+          </div>
+        </div>
+      </div>
+
+
+  </div>
+</div>
+
+<div *ngIf="loading" class="loaderScreen ng-star-inserted"><img src="assets/images/loading.gif"></div>

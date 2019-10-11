@@ -1,0 +1,257 @@
+<div class="page-container noselect">
+  <div class="sidebar-menu toggle-others collapsed" *ngIf="!isLogin" [class.hide-it]="isFullScreenStore">
+    <div class="sidebar-menu-inner">
+
+      <header class="logo-env">
+
+        <!-- logo -->
+        <div class="logo">
+          <a href="dashboard-1.html" class="logo-expanded">
+            <img src="assets/img/icon.png" width="80" alt="" />
+          </a>
+
+          <a href="dashboard-1.html" class="logo-collapsed">
+            <img src="assets/img/icon.png" width="55px" alt="" />
+          </a>
+        </div>
+
+        <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
+        <div class="mobile-menu-toggle visible-xs">
+          <a href="#" data-toggle="user-info-menu">
+            <i class="fa-bell-o"></i>
+            <span class="badge badge-success">7</span>
+          </a>
+
+          <a href="#" data-toggle="mobile-menu">
+            <i class="fa-bars"></i>
+          </a>
+        </div>
+
+        <!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
+        <div class="settings-icon">
+          <a href="#" data-toggle="settings-pane" data-animate="true">
+            <i class="linecons-cog"></i>
+          </a>
+        </div>
+
+
+      </header>
+
+      <app-sidenav-megamenu [open]="openMegaMenu" [item]="selectedNavItem" (onClose)="closeMegaMenu($event)"></app-sidenav-megamenu>
+      <div class="menu-holder">
+        <ul id="main-menu" class="main-menu">
+          <ng-container *ngFor="let nav of navs; let i = index;">
+            <li [class.current-nav]="hasRoute(nav, currentRoute) && selectedIndex === undefined" [class.active]="i === selectedIndex" *ngIf="nav.is_active == 1">
+              <!-- Orginal Code <li [class.current-nav]="hasRoute(nav, currentRoute) && selectedIndex === undefined" [class.active]="i === selectedIndex"  *ngIf="nav.is_active == 1"> -->
+              <a class="parent" (mouseover)="onOpenMegaMenu(i); updateMegaMenu(i);">
+                <img [src]="nav.icon_path">
+                <span class="title">{{nav.menu_title}}</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="main-content" [class.fullscreen-store]="isFullScreenStore" [class.dashboard]="currentModule === 'dashboard'">
+
+    <app-navbar *ngIf="!isLogin" [class.hide-it]="isFullScreenStore"></app-navbar>
+
+    <router-outlet></router-outlet>
+
+    <!-- Main Footer -->
+    <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+    <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+    <!-- Or class "fixed" to  always fix the footer to the end of page -->
+    <footer class="main-footer  footer-type-1 bottom-sticky" *ngIf="!isLogin" [class.hide-it]="isFullScreenStore">
+
+      <div class="footer-inner">
+
+        <!-- Add your copyright text here -->
+        <div class="footer-text">
+          {{currentYear}} &copy;
+          <strong>Retailmaster</strong>
+        </div>
+
+      </div>
+    </footer>
+  </div>
+
+  <div id="chat" class="fixed" *ngIf="!isLogin" [class.hide-it]="isFullScreenStore">
+    <!-- start: Chat Section -->
+
+    <div class="chat-inner">
+
+
+      <h2 class="chat-header">
+        <a href="#" class="chat-close" data-toggle="chat">
+          <i class="fa-plus-circle rotate-45deg"></i>
+        </a>
+
+        Chat
+        <span class="badge badge-success is-hidden">0</span>
+      </h2>
+
+      <div class="chat-group">
+        <strong>Favorites</strong>
+
+        <a href="#">
+          <span class="user-status is-online"></span>
+          <em>Catherine J. Watkins</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-online"></span>
+          <em>Nicholas R. Walker</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-busy"></span>
+          <em>Susan J. Best</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-idle"></span>
+          <em>Fernando G. Olson</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Brandon S. Young</em>
+        </a>
+      </div>
+
+
+      <div class="chat-group">
+        <strong>Work</strong>
+
+        <a href="#">
+          <span class="user-status is-busy"></span>
+          <em>Rodrigo E. Lozano</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Robert J. Garcia</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Daniel A. Pena</em>
+        </a>
+      </div>
+
+
+      <div class="chat-group">
+        <strong>Other</strong>
+
+        <a href="#">
+          <span class="user-status is-online"></span>
+          <em>Dennis E. Johnson</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-online"></span>
+          <em>Stuart A. Shire</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-online"></span>
+          <em>Janet I. Matas</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-online"></span>
+          <em>Mindy A. Smith</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-busy"></span>
+          <em>Herman S. Foltz</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-busy"></span>
+          <em>Gregory E. Robie</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-busy"></span>
+          <em>Nellie T. Foreman</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-busy"></span>
+          <em>William R. Miller</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-idle"></span>
+          <em>Vivian J. Hall</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Melinda A. Anderson</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Gary M. Mooneyham</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Robert C. Medina</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Dylan C. Bernal</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Marc P. Sanborn</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Kenneth M. Rochester</em>
+        </a>
+        <a href="#">
+          <span class="user-status is-offline"></span>
+          <em>Rachael D. Carpenter</em>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- conversation template -->
+    <div class="chat-conversation">
+
+      <div class="conversation-header">
+        <a href="#" class="conversation-close">
+          &times;
+        </a>
+
+        <span class="user-status is-online"></span>
+        <span class="display-name">Arlind Nushi</span>
+        <small>Online</small>
+      </div>
+
+      <ul class="conversation-body">
+        <li>
+          <span class="user">Arlind Nushi</span>
+          <span class="time">09:00</span>
+          <p>Are you here?</p>
+        </li>
+        <li class="odd">
+          <span class="user">Brandon S. Young</span>
+          <span class="time">09:25</span>
+          <p>This message is pre-queued.</p>
+        </li>
+        <li>
+          <span class="user">Brandon S. Young</span>
+          <span class="time">09:26</span>
+          <p>Whohoo!</p>
+        </li>
+        <li class="odd">
+          <span class="user">Arlind Nushi</span>
+          <span class="time">09:27</span>
+          <p>Do you like it?</p>
+        </li>
+      </ul>
+
+      <div class="chat-textarea">
+        <textarea class="form-control autogrow" placeholder="Type your message"></textarea>
+      </div>
+
+    </div>
+
+    <!-- end: Chat Section -->
+  </div>
+</div>

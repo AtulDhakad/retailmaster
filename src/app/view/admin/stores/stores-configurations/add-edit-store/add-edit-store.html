@@ -1,0 +1,70 @@
+<div class="row">    
+
+  <div class="col-sm-12">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ isEdit ? 'Edit' : 'Create' }} store</h3>
+      </div>
+      <div class="panel-body">
+        <div *ngIf="loading" class="loaderScreen">
+			<img src="assets/images/loading.gif">
+		</div>
+        <div class="info-div">
+            Every website must have at least one store. You can attach multiple stores to a website.
+        </div>
+
+        <div class="col-sm-12" *ngIf="selectedStoreGroup">
+        
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="field-1">Web Site *</label>
+
+                <div class="col-sm-10">
+                    <select #cmbWebSite
+								(change)="selectedWs(cmbWebSite.value)"
+								class="form-control">
+								<option *ngFor="let ws of websitelist" [value]="ws.website_id"
+									[selected]="ws.website_id === selectedStoreGroup.website_id">{{ws.name}}</option>
+							</select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="field-1">Store name *</label>
+
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="field-1" *ngIf="selectedStoreGroup" [(ngModel)]="selectedStoreGroup.name"   placeholder="Store Name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="field-1">Root category *</label>
+
+                <div class="col-sm-10">
+                    <select #cmbRootCategory *ngIf="selectedStoreGroup"
+								(change)="selectedRootCategory(cmbRootCategory.value)"
+								class="form-control">
+								<option *ngFor="let rc of rootCategoryList" [value]="rc.value"
+									[selected]="rc.value === selectedRootCategoryId">{{rc.label}}</option>
+							</select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="field-1"></label>
+                <div class="col-sm-10">
+                    <a class="btn btn-white" (click)="onSaveClick(selectedStoreGroup)">Save Store</a>
+                    <a class="btn btn-danger" *ngIf="isEdit" (click)="deleteStore(selectedStoreGroup)">Delete Store</a>
+<!--                     <a class="btn btn-white">Reset</a> -->
+                    <a class="btn btn-warning" (click)="closePanel()">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div> <!-- panel end -->
+
+</div>

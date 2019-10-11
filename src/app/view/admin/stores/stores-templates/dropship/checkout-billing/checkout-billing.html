@@ -1,0 +1,359 @@
+<!--  Sidebar Container -->
+<div class="col-md-12 col-sm-12 col-xs-12 content-container">
+	<div class="row">
+		<!-- left sidebar -->
+		<div class="col-md-8 col-sm-12">
+			<div class="mt-50">
+
+				<!-- TABS  -->
+				<div class="cart-tabs">
+					<div class="col-md-12 col-sm-12">
+						<ul class="nav nav-tabs nav-tabs-center cart-tabs">
+							<li role="presentation" class="active"><a data-toggle="tab"
+								href="#tab1">BILLING DETAILS</a></li>
+							<li role="presentation"><a data-toggle="tab" href="#tab2">SHIPPING
+									DETAILS</a></li>
+
+							<!--<li role="presentation"><a data-toggle="tab" href="#tab2">Same as billing details</a></li>-->
+						</ul>
+					</div>
+					<div style="clear: both"></div>
+					<div class="tab-content">
+						<div id="tab1" class="tab-pane fade active in">
+
+							<div class="space mt-40 mb-20">
+								<h3>Billing Details</h3>
+
+							</div>
+							<!-- FORM -->
+							<form class="form-cont">
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>FIRST NAME</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>LAST NAME</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>COMPANY NAME</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>EMAIL ADDRESS</label> <input type="email"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>PHONE NUMBER</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>COUNTRY</label> <select
+											class="form-control select-text ">
+
+											<option>United Kingdom (UK)</option>
+											<option>USA</option>
+											<option>France</option>
+											<option>Japan</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>ADDRESS</label> <input type="text"
+											class="form-control input-text" placeholder="Street Address" />
+									</div>
+								</div>
+
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Apartment, suite, unit etc (optional)" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>TOWN / CITY</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>POSTAL CODE</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-4 col-sm-4">
+									<button type="button" (click)="navigate('/cart')"
+										class="btn back-btn">BACK TO CART</button>
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<button type="button" class="btn contact-btn">SAVE
+										CONTACT</button>
+								</div>
+
+							</form>
+
+
+						</div>
+						<div id="tab2" class="tab-pane fade text-left">
+							<div class="space mt-40 mb-20">
+								<h3>Shipping Details</h3>
+								<p class="same-rec">
+									<input type="checkbox" /> Same as billing details
+								</p>
+							</div>
+							<!-- FORM -->
+							<form class="form-cont">
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>FIRST NAME</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>LAST NAME</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>COMPANY NAME</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>EMAIL ADDRESS</label> <input type="email"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>PHONE NUMBER</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>COUNTRY</label> <select
+											class="form-control select-text ">
+
+											<option>United Kingdom (UK)</option>
+											<option>USA</option>
+											<option>France</option>
+											<option>Japan</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>ADDRESS</label> <input type="text"
+											class="form-control input-text" placeholder="Street Address" />
+									</div>
+								</div>
+
+
+								<div class="col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="text" class="form-control input-text"
+											placeholder="Apartment, suite, unit etc (optional)" />
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>TOWN / CITY</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-6">
+									<div class="form-group">
+										<label>POSTAL CODE</label> <input type="text"
+											class="form-control input-text" />
+									</div>
+								</div>
+
+								<div class="col-md-4 col-sm-4">
+									<button type="submit" class="btn back-btn">BACK TO
+										CART</button>
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<button type="submit" class="btn contact-btn">SAVE
+										CONTACT</button>
+								</div>
+
+							</form>
+						</div>
+
+
+
+
+					</div>
+				</div>
+				<!--  -->
+
+
+			</div>
+
+
+
+		</div>
+		<!-- right sidebar -->
+		<div class="col-md-4 col-sm-12 cart-right-sidebar">
+			<div class="space">
+
+				<h2 class="cart-head">YOUR ORDER</h2>
+
+				<table class="table cart-table">
+					<tr>
+						<td class="cart-table-width">
+							<h3>
+								Bold Cubism Tray - French Blue <span class="cart-qnty st-font">×
+									5</span>
+							</h3>
+						</td>
+						<td>
+							<h3 class="st-font qnty-price text-right">$814.00</h3>
+						</td>
+					</tr>
+					<tr>
+						<td class="cart-table-width">
+							<h3>
+								Bold Cubism Tray - French Blue <span class="cart-qnty st-font">×
+									5</span>
+							</h3>
+						</td>
+						<td>
+							<h3 class="st-font qnty-price text-right">$210.00</h3>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h3>SUBTOTAL</h3>
+						</td>
+						<td>
+							<h3 class="st-font text-right">$814.00</h3>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h3>SHIPPING</h3>
+						</td>
+						<td>
+							<ul class="shipping-list">
+								<li><input type="radio" name="shipping_method" id="s-02"
+									checked> <label>Free Shipping</label></li>
+								<li><input type="radio" name="shipping_method" id="s-02">
+									<label>Flat Rate: <span
+										class="woocommerce-Price-amount amount"><span
+											class="woocommerce-Price-currencySymbol">$</span>25.00</span></label></li>
+								<li><input type="radio" name="shipping_method" id="s-03">
+									<label>Local Delivery: <span
+										class="woocommerce-Price-amount amount"><span
+											class="woocommerce-Price-currencySymbol">$</span>5.00</span></label></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h3 style="padding-top: 4px">TOTAL</h3>
+						</td>
+						<td>
+							<h3 class="price-bold st-font">$839.00</h3>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<ul class="shipping-list">
+								<li><input type="radio" name="b-transfer" id="b-transfer">
+									<label class="b-transfer">DIRECT BANK TRANSFER</label>
+									<p class="b-transfer-detail">Make your payment directly
+										into our bank account. Please use your Order ID as the payment
+										reference. Your order won’t be shipped until the funds have
+										cleared in our account.</p></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<ul class="shipping-list">
+								<li><input type="radio" name="check-payment"
+									id="check-payment"> <label class="b-transfer">CHECK
+										PAYMENTS</label></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<ul class="shipping-list">
+								<li><input type="radio" name="cash-delivery"
+									id="cash-delivery"> <label class="b-transfer">CASH
+										ON DELIVERY</label></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul class="shipping-list">
+								<li><input type="radio" name="pal" id="pal"> <label
+									class="b-transfer">PAYPAL</label></li>
+							</ul>
+						</td>
+						<td><a href=""> <img src="images/credit.png"
+								class="img-responsive" />
+						</a></td>
+					</tr>
+
+				</table>
+
+				<div>
+					<button type="submit" class="btn btn-default checkout-btn mb-60"
+						style="width: 100%">PLACE ORDER</button>
+				</div>
+
+
+			</div>
+
+		</div>
+
+
+	</div>
+</div>

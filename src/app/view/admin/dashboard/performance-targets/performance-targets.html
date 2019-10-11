@@ -1,0 +1,144 @@
+<!-- Basic Setup -->
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Performance targets</h3>
+	</div>
+	<div class="panel-body">
+		<div class="action-bar">
+			<div></div>
+			<div>
+				<a class="btn btn-white" data-toggle="modal" data-target="#gridline"><i
+					class="fa fa-bars"></i></a>
+			</div>
+		</div>
+	</div>
+	<div class="row select-widget">
+		<div class="col-sm-1 year-selection active">2017</div>
+		<div class="col-sm-1 year-selection">2018</div>
+		<div class="col-sm-1 year-selection">2019</div>
+		<div class="col-sm-1 year-selection">2020</div>
+		<div class="col-sm-1 year-selection">2021</div>
+		<div class="col-sm-1 year-selection">2022</div>
+		<div class="col-sm-1 year-selection">2023</div>
+		<div class="col-sm-1 year-selection">2024</div>
+		<div class="col-sm-1 year-selection">2025</div>
+		<div class="col-sm-1 year-selection">2026</div>
+		<div class="col-sm-1 year-selection">&nbsp;</div>
+		<div class="col-sm-1 year-selection">&nbsp;</div>
+		<div class="flexible">
+			<div class="month-selection">Jan</div>
+			<div class="month-selection">Feb</div>
+			<div class="month-selection">Mar</div>
+			<div class="month-selection active">Apr</div>
+			<div class="month-selection">May</div>
+			<div class="month-selection">Jun</div>
+			<div class="month-selection">Jul</div>
+			<div class="month-selection">Aug</div>
+			<div class="month-selection">Sep</div>
+			<div class="month-selection">Oct</div>
+			<div class="month-selection">Nov</div>
+			<div class="month-selection">Dec</div>
+		</div>
+	</div>
+
+	<div class="row" *ngIf="stores">
+		<div class="col-md-12 p-0 bg-white">
+			<div class="panel-group element-wrapper mt-1 pt-1"
+				id="accordion-test">
+				<div class="panel panel-default" *ngFor="let st of stores">
+					<div class="panel-heading col-sm-12" *ngIf="st">
+						<h4 class="panel-title col-md-2 pl-0">
+							<a data-toggle="collapse" data-parent="#accordion-test"
+								href="#collapse{{st.store}}" class="collapsed"> <span
+								class="store-name">{{st.store}}</span> <i
+								class="fa fa-plus ml-2"></i>
+							</a>
+						</h4>
+<!-- 						<div class="col-md-10"> -->
+<!-- 						 <mat-slider   min="0" *ngIf="gridline" max="{{gridline.max_value}}" step="{{gridline.gridline_interval}}" value="{{st.target}}"></mat-slider> -->
+<!-- 							<div class="slider slider-purple"  -->
+<!-- 								(click)="onSelectStore(st)" data-step="100" data-max="3000" [attr.data-value]="st.target"></div> -->
+<!-- 						</div> -->
+					</div>
+					<app-employeelist *ngIf="st" [storeName]="st.store"
+						(onSelectEmp)="onSelectedEmployee($event)" (onTotalTarget)="onTotalTarget($event)"></app-employeelist>
+				</div>
+			</div>
+			<div class="graph-line col-sm-offset-2"
+				*ngFor="let number of totaIteration;"
+				[ngStyle]="{'left': (number * 7)  +'.5vw' }">{{number*gridline.gridline_interval}}</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- <div class="row"> -->
+<!-- 	<div class="pull-right" style="padding: 10px 0px"> -->
+<!-- 		<button type="button" class="btn btn-white">Cancel</button> -->
+<!-- 		<button type="button" class="btn btn-white">Save</button> -->
+<!-- 	</div> -->
+<!-- </div> -->
+
+
+
+<div class="modal fade modal-1" id="storetargetValue">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Insert Value</h4>
+			</div>
+
+			<div class="modal-body">
+				<input type="number" class="form-control"
+					[(ngModel)]="targetEntered" placeholder="targetEntered" />
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-info" (click)="onSaveChanges()"
+					data-dismiss="modal">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-2" id="gridline">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Gridline settings</h4>
+			</div>
+
+			<div class="modal-body" *ngIf="gridline">
+				<div style="padding: 10px 0px; display: flex;">
+					<div class="col-md-3" style="padding: 7px 0px;">Maximum value
+					</div>
+					<div class="col-md-9">
+						<input type="number" [(ngModel)]="gridline.max_value"
+							class="form-control" />
+					</div>
+				</div>
+				<div style="padding: 10px 0px; display: flex;">
+					<div class="col-md-3" style="padding: 7px 0px;">Gridline
+						interval</div>
+					<div class="col-md-9">
+						<input type="number" [(ngModel)]="gridline.gridline_interval"
+							class="form-control" />
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+				<button type="button" (click)="saveGridline()" class="btn btn-white"
+					data-dismiss="modal">Save</button>
+			</div>
+		</div>
+	</div>
+</div>

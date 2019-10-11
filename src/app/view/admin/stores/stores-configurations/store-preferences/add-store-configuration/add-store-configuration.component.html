@@ -1,0 +1,289 @@
+<div class="row">
+
+	<div class="col-sm-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Store configuration settings</h3>
+			</div>
+			<div class="panel-body" *ngIf="newStoreConfiguration">
+				<div *ngIf="loading" class="loaderScreen">
+					<img src="assets/images/loading.gif">
+				</div>
+				<div class="col-sm-12">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Select
+							website</label>
+
+						<div class="col-sm-10">
+							<select #cmbWebSite (change)="selectedWs(cmbWebSite.value)"
+								class="form-control">
+								<option *ngFor="let ws of websiteList" [value]="ws.website_id">{{ws.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Select
+							store</label>
+
+						<div class="col-sm-10">
+							<select #selectStoregrp
+								(change)="selectedStoreGroup(selectStoregrp.value)"
+								class="form-control">
+								<option *ngFor="let stgrp of storeGroupList"
+									[value]="stgrp.group_id">{{stgrp.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Select
+							store view</label>
+
+						<div class="col-sm-10">
+							<select #selectStoreview
+								(change)="selectedStoreView(selectStoreview.value)"
+								class="form-control">
+								<option *ngFor="let stview of storeViewList"
+									[value]="stview.store_id">{{stview.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Store
+							name *</label>
+
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Name" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.name">
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Store
+							address</label>
+
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Address" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.address">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Store
+							url</label>
+
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="URL" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.url">
+						</div>
+					</div>
+
+					<div class="form-group form-inline form-for-two">
+						<label class="col-sm-2 control-label" for="field-1">Store
+							contact details</label>
+						<div class="col-sm-5 no-r-padding">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Contact Number" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.contact_number">
+						</div>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Email" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.email">
+						</div>
+					</div>
+
+					<div class="form-group form-inline">
+						<div class="col-sm-2">
+							<label class="control-label" for="field-1">Payment
+								methods</label><a class="btn btn-success col-md-offset-2"
+								data-toggle="modal" data-target="#AddPaymentTags">Add</a>
+						</div>
+						<div class="col-sm-10">
+							<app-tag-input placeholder=""
+								[items]="selectedPaymentMethodStringList" delimiterCode="188">
+							</app-tag-input>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-2">
+							<label class="control-label" for="field-1">Shipping
+								methods</label><a class="btn btn-success col-md-offset-2"
+								data-toggle="modal" data-target="#AddShippingTags">Add</a>
+						</div>
+						<div class="col-sm-10">
+							<app-tag-input placeholder=""
+								[items]="selectedShippingMethodStringList" delimiterCode="188">
+							</app-tag-input>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-2">
+							<label class="control-label" for="field-1">Tax</label>
+						</div>
+						<div class="col-sm-10">
+							<select class="form-control" #cmbTaxRule
+								(change)="selectedTaxRule(cmbTaxRule.value)">
+								<option *ngFor="let tr of taxRuleList" [value]="tr.rule_id">{{tr.tax_name}}</option>
+							</select>
+						</div>
+						<!-- 						<div class="col-sm-5"> -->
+						<!-- 							<input type="text" class="form-control" id="field-1" -->
+						<!-- 								placeholder="0% GST for"> -->
+						<!-- 						</div> -->
+					</div>
+
+					<div class="form-group form-inline form-for-three">
+						<label class="col-sm-2 control-label" for="field-1">Custom
+							order numbers</label>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Custom Order Number" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.custom_order_number">
+						</div>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Sequence Number" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.sequence_number">
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="field-1"
+								placeholder="Suffix" *ngIf="newStoreConfiguration"
+								[(ngModel)]="newStoreConfiguration.suffix">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Default
+							language</label>
+
+						<div class="col-sm-10">
+							<select #cmbLanguage
+								(change)="selectedLanguage(cmbLanguage.value)"
+								class="form-control">
+								<option *ngFor="let lg of languageList" [value]="lg.lang_id">{{lg.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Home
+							currency</label>
+
+						<div class="col-sm-10">
+							<select #cmbCurrency
+								(change)="selectedCurrency(cmbCurrency.value)"
+								class="form-control">
+								<option *ngFor="let cur of currencyList" [value]="cur.id">{{cur.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Access
+							permissions</label>
+
+						<div class="col-sm-10">
+							<select #cmbEmployees
+								(change)="selectedEmployee(cmbEmployees.value)"
+								class="form-control">
+								<option *ngFor="let em of employeeList" [value]="em.id">{{em.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1"></label>
+						<div class="col-sm-10">
+							<a class="btn btn-info" (click)="onSaveClick()">Save</a> <a
+								class="btn btn-white" (click)="onCancelClick()">Cancel</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<!-- panel end -->
+
+</div>
+<div class="modal fade modal-2" id="AddPaymentTags">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Methods</h4>
+			</div>
+			<div class="modal-body"
+				style="overflow-y: auto; max-height: 400px; padding: 15px;">
+				<div *ngIf="loading" class="loaderScreen">
+					<img src="assets/images/loading.gif">
+				</div>
+				<div class="col-sm-12">
+					<ul style="list-style: none;">
+						<li *ngFor="let pm of paymentMethodsList" class="checkbox"><input
+							type="checkbox"
+							(change)="onCheckBoxPaymentChange(pm, $event.target.checked)" />
+							{{pm.label}}</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-2" id="AddShippingTags">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Shipping Methods</h4>
+			</div>
+			<div class="modal-body"
+				style="overflow-y: auto; max-height: 400px; padding: 15px;">
+				<div *ngIf="loading" class="loaderScreen">
+					<img src="assets/images/loading.gif">
+				</div>
+				<div class="col-sm-12">
+					<ul style="list-style: none">
+						<li class="checkbox" *ngFor="let shp of shippingMethodsList">
+							<input type="checkbox"
+							(change)="onCheckBoxShippingChange(shp, $event.target.checked)" />
+							{{shp.label}}
+						</li>
+					</ul>
+
+				</div>
+			</div>
+			<!-- 			<div class="modal-body" style="min-height: 150px"> -->
+			<!-- 				<div class="col-sm-12"> -->
+			<!-- 					<div class="checkbox checkrow" -->
+			<!-- 						*ngFor="let shp of shippingMethodsList"> -->
+			<!-- 						<label> <input type="checkbox" -->
+			<!-- 							(change)="onCheckBoxShippingChange(shp, $event.target.checked)" /> -->
+			<!-- 							{{shp.label}} -->
+			<!-- 						</label> -->
+			<!-- 					</div> -->
+			<!-- 				</div> -->
+
+			<!-- 			</div> -->
+
+		</div>
+	</div>
+</div>

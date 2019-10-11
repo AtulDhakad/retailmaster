@@ -1,0 +1,226 @@
+<div class="row" *ngIf="!isUserSetting">
+    <div class="col-sm-12">
+        <div class="panel panel-default panel-white">
+            <div class="panel-heading">
+                <h3 class="panel-title">Users & Permissions</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <a (click)="create();" data-toggle="modal" data-target="#modal"><img src="assets/images/add-employee.png" class="pull-right" /></a>
+                </div>
+                <table id="example-1" class="table table-model-2 table-permissions">
+                    <thead>
+                        <tr style="background-color: transparent;">
+                            <th>User</th>
+                            <th>Login name</th>
+                            <th>Status</th>
+                            <th class="no-sort"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-template let-user ngFor [ngForOf]="users">
+                        <tr>
+                            <td>{{user.firstname}} {{user.lastname}}</td>
+                            <td>{{user.username}}</td>
+                            <td>
+                                <select class="form-control" [(ngModel)]="user.status" (change)="onStatusChange(user)" style="width: 100%;">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </td>
+                            <td>
+                            <a (click)="edit(user);" data-toggle="modal" data-target="#modal"><img src="assets/images/edit-employee.png" /></a> 
+                            <a (click)="onUserSettingsClick(user)" class="ml-1"><img src="assets/images/lock-employee.png" /></a>
+                            </td>
+                        </tr>
+                        </ng-template>
+                        <tr class="tr-loader" *ngIf="users.length === 0">
+                            <td colspan="4">
+                                <img src="assets/images/loading.gif"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-1" id="modal" [ngStyle]="{'display' : isDisplayPopup === true ? 'block' : 'none'}">
+    <div class="modal-dialog" style="width: 40%;">
+        <div class="modal-content">
+            <form name="userform" (submit)="save()" [formGroup]="newUser">
+            <div class="modal-header">
+                <button type="button" #closeDialog (click)="clear()" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{ isEdit ? "Edit" : "Create" }} User</h4>
+            </div>
+            
+            <div class="modal-body">
+                <div *ngIf="dialogMsg">
+                    <p class="text-danger text-center">{{dialogMsg}}</p>                    
+                </div>               
+                <div class="row form-horizontal form-group">
+                    <div class="col-sm-4"><label>First Name</label></div>
+                    <div class="col-sm-8"><input required type="text" formControlName="firstname" class="form-control" value="" /></div>
+                </div>
+                <div class="row form-horizontal form-group">
+                    <div class="col-sm-4"><label>Last Name</label></div>
+                    <div class="col-sm-8"><input required type="text" formControlName="lastname" class="form-control" value="" /></div>
+                </div>
+                <div class="row form-horizontal form-group">
+                    <div class="col-sm-4"><label>User Name</label></div>
+                    <div class="col-sm-8"><input required type="text" formControlName="username" class="form-control" value="" /></div>
+                </div>
+                <div class="row form-horizontal form-group">
+                    <div class="col-sm-4"><label>Password</label></div>
+                    <div class="col-sm-8"><input required type="password" formControlName="password" class="form-control" value="" /></div>
+                </div>
+                <div class="row form-horizontal form-group">
+                    <div class="col-sm-4"><label>Confirm Password</label></div>
+                    <div class="col-sm-8"><input required type="password" formControlName="confirm_password" class="form-control" value="" /></div>
+                </div>
+                <div class="row form-horizontal form-group">
+                    <div class="col-sm-4"><label>Status</label></div>
+                    <div class="col-sm-8">
+                        <select class="form-control" formControlName="status">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" *ngIf="isEdit" (click)="removeUser()" class="btn btn-danger outline">Delete</button>
+                <button type="button" (click)="clear()" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-info">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="accordion-test-2" *ngIf="isUserSetting">
+    <div *ngIf="isPermissionSaving" class="loader"><img src="assets/images/loading.gif"></div>
+    <div class="col-sm-12">
+        <div class="panel panel-default panel-white">
+            <div class="panel-heading">
+                <h3 class="panel-title">Users & Permissions</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div class="row mb-1" style="color:#000;">
+                        <div class="col-md-3 col-sm-3">Login name: <b>{{isUserSetting.username}}</b></div>
+                        <div class="col-md-6 col-sm-6">
+                            <span class="checkbox-container">
+                                <span class="fa fa-check-square-o" *ngIf="hasFullAccess" (click)="fullAccessClicked()"></span>
+                                <span class="fa fa-square-o" *ngIf="!hasFullAccess" (click)="fullAccessClicked()"></span>
+                            </span>
+                            <label for="minimal-checkbox-1-11"> &nbsp;Admin user with full access permissions</label>
+                        </div>
+                        <div class="col-md-3 col-sm-3 text-right">
+                            <a style="margin:0px;" class="btn btn-white icon-left" (click)="collapseAll()">Collapse all</a>
+                            <a style="margin:0px;" class="btn btn-white icon-left" (click)="expandAllNodes()">Expand all</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <table class="table table-model-2 table-permissions">
+                        <thead>
+                            <tr style="background-color: transparent;">
+                                <th style="width: 230px;">Main menu</th>
+                                <th style="width: 247px;">Submenu</th>
+                                <th style="width: 30px;"></th>
+                                <th style="width: 30px;"></th>
+                                <th style="width: 247px;">Permission name</th>
+                                <th>Create</th>
+                                <th>Read</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-template let-menu let-i="index" ngFor [ngForOf]="permissions | sort">
+                                <tr class="p-main-menu" *ngIf="menu.is_active == 1">
+                                    <td class="has-menu" style="color: #FFF;" [ngClass]="{'collapseActive': isAddedToExpanded(menu.menu_id)}" (click)="expandMe(menu.menu_id, false)">{{menu.menu_title}}</td>
+                                    <td colspan="8"></td>
+                                </tr>
+                                <ng-template let-submenu let-j="index" ngFor [ngForOf]="(menu.submenu | sort)">
+                                    <!--<tr class="p-sub-menu collapse main-menu-1" *ngIf="submenu.submenu.length === 0">
+                                        <td>{{submenu.menu_title}}</td>
+                                        <td>Performance targets</td>
+                                        <td class="give-rights"><img src="assets/images/arrow-left.png" /></td>
+                                        <td class="hidden-permission take-rights"><img src="assets/images/arrow-right.png" /></td>
+                                        <td class="hidden-permission">Performance targets</td>
+                                        <td class="hidden-permission">
+                                            <input tabindex="1" type="checkbox" class="icheck-11" id="minimal-checkbox-1-11">
+                                            <label for="minimal-checkbox-1-11"></label>
+                                        </td>
+                                        <td class="hidden-permission">
+                                            <input tabindex="1" type="checkbox" class="icheck-11" id="minimal-checkbox-1-11">
+                                            <label for="minimal-checkbox-1-11"></label>
+                                        </td>
+                                        <td class="hidden-permission">
+                                            <input tabindex="1" type="checkbox" class="icheck-11" id="minimal-checkbox-1-11">
+                                            <label for="minimal-checkbox-1-11"></label>
+                                        </td>
+                                        <td class="hidden-permission">
+                                            <input tabindex="1" type="checkbox" class="icheck-11" id="minimal-checkbox-1-11">
+                                            <label for="minimal-checkbox-1-11"></label>
+                                        </td>
+                                    </tr>-->
+                                    <ng-template let-submenu2 let-k="index" ngFor [ngForOf]="(submenu.submenu | sort)">
+                                        <tr class="p-sub-menu collapse main-menu-1" *ngIf="submenu2.is_active == 1 && submenu.is_active == 1 " [ngClass]="{'in': isAddedToExpanded(menu.menu_id)}">
+                                            <td>{{ k === 0 ? submenu.menu_title : "" }}</td>
+                                            <td>{{ submenu2.menu_title }}</td>
+                                            <td class="give-rights" (click)="setVisibility(submenu2.menu_id, false)" [ngClass]="{'hidden-permission': !isPermissionHidden(submenu2.menu_id, submenu2.permissions)}"><img src="assets/images/arrow-left.png" /></td>
+                                            <td class="take-rights" (click)="takeRights(submenu2)" [ngClass]="{'hidden-permission': isPermissionHidden(submenu2.menu_id, submenu2.permissions)}"><img src="assets/images/arrow-right.png" /></td>
+                                            <td [ngClass]="{'hidden-permission': isPermissionHidden(submenu2.menu_id, submenu2.permissions)}">{{ submenu2.menu_title }}</td>
+                                            <td [ngClass]="{'hidden-permission': isPermissionHidden(submenu2.menu_id, submenu2.permissions)}">
+                                                <span class="checkbox-container">
+                                                    <span class="fa" [ngClass]="{'fa-check-square-o': submenu2.permissions.Create, 'fa-square-o': !submenu2.permissions.Create}" (click)="grantPermission(submenu2,'create')"></span>
+                                                </span>
+                                                <label for="minimal-checkbox-1-11"></label>
+                                            </td>
+                                            <td [ngClass]="{'hidden-permission': isPermissionHidden(submenu2.menu_id, submenu2.permissions)}">
+                                                <span class="checkbox-container">
+                                                    <span class="fa" [ngClass]="{'fa-check-square-o': submenu2.permissions.Read, 'fa-square-o': !submenu2.permissions.Read}" (click)="grantPermission(submenu2, 'read')"></span>
+                                                </span>
+                                                <label for="minimal-checkbox-1-11"></label>
+                                            </td>
+                                            <td [ngClass]="{'hidden-permission': isPermissionHidden(submenu2.menu_id, submenu2.permissions)}">
+                                                <span class="checkbox-container">
+                                                    <span class="fa" [ngClass]="{'fa-check-square-o': submenu2.permissions.Update, 'fa-square-o': !submenu2.permissions.Update}" (click)="grantPermission(submenu2, 'update')"></span>
+                                                </span>
+                                                <label for="minimal-checkbox-1-11"></label>
+                                            </td>
+                                            <td [ngClass]="{'hidden-permission': isPermissionHidden(submenu2.menu_id, submenu2.permissions)}">
+                                                <span class="checkbox-container">
+                                                    <span class="fa" [ngClass]="{'fa-check-square-o': submenu2.permissions.Delete, 'fa-square-o': !submenu2.permissions.Delete}" (click)="grantPermission(submenu2,'delete')"></span>
+                                                </span>
+                                                <label for="minimal-checkbox-1-11"></label>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </ng-template>
+                            </ng-template>
+                            <tr class="tr-loader" *ngIf="permissions.length === 0">
+                                <td colspan="9">
+                                    <img src="assets/images/loading.gif"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <label class="col-sm-2 control-label" for="field-3"></label>
+
+                <div class="col-sm-10 text-right">
+                    <a class="btn btn-success" (click)="onUserPermissionsUpdate()" style="color: #fff;">Save</a>
+                    <a class="btn btn-warning" (click)="clear()" style="color: #fff;">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

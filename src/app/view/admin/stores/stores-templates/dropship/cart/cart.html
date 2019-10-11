@@ -1,0 +1,198 @@
+<!--  Sidebar Container -->
+<div class="col-md-12 col-sm-12 col-xs-12 content-container">
+	<div *ngIf="loading" class="loaderScreen">
+		<img src="assets/images/loading.gif">
+	</div>
+	<div class="row">
+		<!-- left sidebar -->
+		<div class="col-md-8 col-sm-8 lwhite">
+			<div class="space mt-50">
+				<div class="row mt-50 border border-light"
+					*ngFor="let item of cartItems; let i = index;">
+
+					<div class="col-md-1 col-sm-1" style="padding: 0px">
+						<a><img [src]="item.product.image" style="width: 75px" /></a>
+					</div>
+					<div class="col-md-4 col-sm-4" style="padding: 0px">
+						<h3 class="product-title mt-0">
+							<a class="product-title-link"
+								(click)="navigate('/product/'+item.product.id)">{{item.product.name}}</a>
+						</h3>
+					</div>
+					<div class="col-md-2 col-sm-2 text-right" style="padding: 0px">
+						<span class="product-price mt-0 st-font text-right">
+							RM{{item.product.price | number : '1.2-2'}} </span>
+					</div>
+					<div class="col-md-2 col-sm-2" style="padding-left: 10px">
+						<div>
+							<div class="input-group number-spinner text-spinner-num">
+								<span class="input-group-btn">
+									<button class="btn btn-default text-spinner-btn" data-dir="dwn"
+										(click)="removeQuantity(i)">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</span> <input type="text" class="form-control text-center"
+									[(ngModel)]="cartItems[i].quantity"> <span
+									class="input-group-btn">
+									<button class="btn btn-default text-spinner-btn" data-dir="up"
+										(click)="addQuantity(i)">
+										<span class="glyphicon glyphicon-plus"></span>
+									</button>
+								</span>
+							</div>
+
+						</div>
+						<br>
+						<div>
+							<span class="stock-status-available"> {{item.stockMsg1}}</span><br>
+							<span class="stock-status-not-available">
+								{{item.stockMsg2}}</span>
+						</div>
+
+					</div>
+					<div class="col-md-2 col-sm-2 text-right" style="padding: 0px">
+						<span class="product-price mt-0 st-font text-right">
+							RM{{calculatePrice(item.product.price ,
+							item.quantity)|number:'1.2-2'}}</span>
+					</div>
+					<div class="col-md-1 col-sm-1 text-right pull-right"
+						style="padding-left: 0px; padding-right: 40px">
+						<a (click)="removeCartItem(item)"> <i
+							class="fa fa-times cross-icon" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+				<!-- 				<div class="table-responsive"> -->
+				<!-- 					<table class="table product-table"> -->
+				<!-- 						<tr *ngFor="let item of cartItems;let i = index;"> -->
+				<!-- 							<td><a href=""><img [src]="item.product.image" /></a></td> -->
+				<!-- 							<td class="td-1"> -->
+				<!-- 								<h3 class="product-title mt-0"> -->
+				<!-- 									<a class="product-title-link" -->
+				<!-- 										(click)="navigate('/product/'+item.product.id)">{{item.product.name}}</a> -->
+				<!-- 								</h3> -->
+				<!-- 							</td> -->
+				<!-- 							<td><span class="product-price mt-0 st-font w-25"> -->
+				<!-- 									RM{{item.product.price | number : '1.2-2'}} </span></td> -->
+				<!-- 							<td> -->
+				<!-- 								<div> -->
+				<!-- 									<div class="input-group number-spinner text-spinner-num"> -->
+				<!-- 										<span class="input-group-btn"> -->
+				<!-- 											<button class="btn btn-default text-spinner-btn" -->
+				<!-- 												data-dir="dwn" (click)="removeQuantity(i)"> -->
+				<!-- 												<span class="glyphicon glyphicon-minus"></span> -->
+				<!-- 											</button> -->
+				<!-- 										</span> <input type="text" class="form-control text-center" -->
+				<!-- 											[(ngModel)]="cartItems[i].quantity"> <span -->
+				<!-- 											class="input-group-btn"> -->
+				<!-- 											<button class="btn btn-default text-spinner-btn" -->
+				<!-- 												data-dir="up" (click)="addQuantity(i)"> -->
+				<!-- 												<span class="glyphicon glyphicon-plus"></span> -->
+				<!-- 											</button> -->
+				<!-- 										</span> -->
+				<!-- 									</div> -->
+
+				<!-- 								</div> -->
+				<!-- 								<div> -->
+				<!-- 									<span class="stock-status-available"> {{item.stockMsg1}}</span><br> -->
+				<!-- 									<span class="stock-status-not-available"> -->
+				<!-- 										{{item.stockMsg2}}</span> -->
+				<!-- 								</div> -->
+				<!-- 							</td> -->
+				<!-- 							<td><span class="product-price mt-0 st-font w-25"> -->
+				<!-- 									RM{{calculatePrice(item.product.price , -->
+				<!-- 									item.quantity)|number:'1.2-2'}}</span></td> -->
+				<!-- 							<td><a (click)="removeCartItem(item)"> <i -->
+				<!-- 									class="fa fa-times cross-icon" aria-hidden="true"></i> -->
+				<!-- 							</a></td> -->
+				<!-- 						</tr> -->
+				<!-- 					</table> -->
+				<!-- 				</div> -->
+				<!-- 			</div> -->
+
+				<div class="sapce mt-50">
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<input type="text" class="form-control input-text"
+								placeholder="COUPON CODE" />
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-3">
+						<div class="form-group">
+							<input type="button" class="btn btn-default prd-button"
+								value="APPLY COUPON" />
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-3">
+						<div class="form-group">
+							<input type="button" class="btn btn-default prd-button"
+								value="UPDATE CART" (click)=updateCart() />
+						</div>
+					</div>
+				</div>
+
+
+				<div class="mt-30 col-md-12">
+					<div class="row">
+						<div class="col-md-4 col-sm-4">
+							<button type="button" (click)="openView('home')"
+								class="btn back-btn">CONTINUE SHOPPING</button>
+						</div>
+						<div class="col-md-4 col-sm-4">
+							<button type="button" class="btn contact-btn"
+								(click)="emptyCart()">EMPTY CART</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- right sidebar -->
+		</div>
+		<div class="col-md-4 col-sm-12 cart-right-sidebar">
+			<div class="space">
+				<h2 class="cart-head">
+					CART TOTAL <span class="pull-right">RM</span>
+				</h2>
+				<table class="table cart-table">
+					<tr>
+						<td>
+							<h3>Subtotal</h3>
+						</td>
+						<td>
+							<h3 class="text-right st-font">
+								RM{{subtotal | number : '1.2-2'}}</h3>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h3>GST @{{taxRate | number : '1.0-0'}}%</h3>
+						</td>
+						<td>
+							<h3 class="text-right st-font">RM{{gst | number : '1.2-2'}}</h3>
+						</td>
+					</tr>
+					<tr style="border-bottom: none">
+						<td>
+							<h3 style="padding-top: 4px">TOTAL</h3>
+						</td>
+						<td>
+							<h3 class="price-bold st-font text-right">
+								RM{{total | number : '1.2-2'}}</h3>
+						</td>
+					</tr>
+				</table>
+				<div>
+					<button type="submit" (click)="checkAvailability()"
+						class="btn-default checkout-btn btn" style="margin-left: 5px">
+						CHECK AVAILABILITY<span class="check-mark"
+							*ngIf="isAllProductStockAvailable">&nbsp;&nbsp;✓ </span>
+					</button>
+					<button type="submit" (click)="openView('checkout')"
+						class="btn-default checkout-btn btn mb-10 align-middle" style="margin-top: 10px"
+						[disabled]="!isAllProductStockAvailable">PROCEED TO CHECK
+						OUT</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

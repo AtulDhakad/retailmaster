@@ -1,0 +1,114 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="col-sm-6">
+			<div class="alert alert-success"
+				*ngIf="message.length > 0 ? true : false">
+				<b>{{message}}</b>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="loading" class="loaderScreen">
+		<img src="assets/images/loading.gif">
+	</div>
+	<div class="col-sm-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Shipping methods</h3>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<div class="checkbox checkrow"
+							*ngFor="let shp of shippingMethodList">
+							<label> {{shp.label}}</label> <a href="#" data-toggle="modal"
+								data-target="#modal" (click)="onShippingMethodSelected(shp)"><i
+								class="fa fa-edit"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Add shipping method</h3>
+			</div>
+			<div class="panel-body" style="min-height: 120px">
+				<div class="row form-group">
+					<label class="col-sm-3 control-label" for="field-1">Method
+						name</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control"
+							placeholder="Shipping method name"
+							[(ngModel)]="newShippingMethod.name" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="field-1">Status</label>
+						<div class="col-sm-9">
+							<select class="form-control" #selectStatus
+								(change)="selectedStatus(selectStatus.value)">
+								<option *ngFor="let st of statusArrList" [value]="st.id">{{st.name}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<div class="form-group">
+							<a class="btn btn-info" (click)="OnSaveShippingMethod()">Save</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-1" id="modal">
+	<div class="modal-dialog" style="width: 40%;">
+		<div class="modal-content">
+			<div *ngIf="loading" class="loaderScreen">
+				<img src="assets/images/loading.gif">
+			</div>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" style="font-weight: 600;">Edit shipping
+					methods</h4>
+			</div>
+
+			<div class="modal-body" style="min-height: 120px">
+				<div class="row form-horizontal form-group">
+					<div class="col-sm-3">
+						<label style="padding-top: 9px;">Method name</label>
+					</div>
+					<div class="col-sm-9">
+						<input type="text" class="form-control"
+							*ngIf="selectedShippingMethod"
+							[(ngModel)]="selectedShippingMethod.name" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="field-1">Status</label>
+						<div class="col-sm-9">
+							<select class="form-control" #selectStatus
+								(change)="selectedStatus(selectStatus.value)">
+								<option *ngFor="let st of statusArrList" [value]="st.id">{{st.name}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info"
+					(click)="onUpdateShippingMethod()" data-dismiss="modal">Update</button>
+				<button type="button" class="btn btn-info"
+					(click)="onShippingMethodDelete()" data-dismiss="modal">Delete</button>
+				<button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

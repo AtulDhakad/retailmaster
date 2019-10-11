@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default panel-white">
+      <div class="panel-heading">
+        <h3 class="panel-title">Menu management</h3>
+      </div>
+      <div class="panel-body">
+        <div class="action-bar">
+          <div></div>
+          <div>
+            <a class="btn btn-white icon-left" (click)="addNew()" data-toggle="modal" data-target="#add_new">Add New</a>
+            <a class="btn btn-white icon-left" (click)="collapseAll()">Collapse all</a>
+            <a class="btn btn-white icon-left" (click)="expandAllNodes()">Expand all</a>
+            <a style="visibility: hidden" #newItem data-toggle="modal" data-target="#add_new"></a>
+          </div>
+        </div>
+        <div *ngIf="loading" class="loader"><img src="assets/images/loading.gif"></div>
+        <div *ngIf="nodes.length === 0 && !loading" class="nodata">No Records</div>
+        <app-rm-ui-tree [nodes]="nodes" (EditClick)="onEdit($event)" (StatusChangeClick)="onStatusChange($event)"
+          (RemoveClick)="onRemove($event)" (AddClick)="onAdd($event)" (dragEvent)="onDrag($event)"></app-rm-ui-tree>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-2" id="add_new" [ngStyle]="{'display' : isDisplayPopup === true ? 'block' : 'none'}">
+  <div class="modal-dialog" style="width: 40%;">
+    <div class="modal-content">
+      <div *ngIf="isMenuSaving" class="loader"><img src="assets/images/loading.gif"></div>
+      <div class="modal-header">
+        <button type="button" class="close" #close (click)="clear()" data-dismiss="modal"
+          aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add new menu</h4>
+      </div>
+
+      <div class="modal-body">
+        <div style="padding: 10px 0px; display: flex;">
+          <div class="col-md-3" style="padding: 7px 0px;">
+            Menu name
+          </div>
+          <div class="col-md-9">
+            <input type="text" [(ngModel)]="menu.title" class="form-control" placeholder="" autofocus />
+            <div *ngIf="errors.title" class="error-text">You must include a title.</div>
+          </div>
+        </div>
+        <div *ngIf="selectedLevel === 3" style="padding: 10px 0px; display: flex;">
+          <div class="col-md-3" style="padding: 7px 0px;">
+            API route
+          </div>
+          <div class="col-md-9">
+            <input type="text" [(ngModel)]="menu.route" class="form-control" placeholder="" />
+            <div *ngIf="errors.route" class="error-text">You must include a route.</div>
+          </div>
+        </div>
+        <div *ngIf="selectedLevel === 3" style="padding: 10px 0px; display: flex;">
+          <div class="col-md-3" style="padding: 7px 0px;">
+            Store Id
+          </div>
+          <div class="col-md-9">
+            <input type="text" [(ngModel)]="menu.store_id" class="form-control" placeholder="" />
+            <div *ngIf="errors.store_id" class="error-text">You must include a route.</div>
+          </div>
+        </div>
+        <div *ngIf="25 > 110"></div>
+        <div *ngIf="25 < 110"></div>
+        <div *ngIf="selectedLevel === 1" style="padding: 10px 0px; display: flex;">
+          <div class="col-md-3" style="padding: 7px 0px;">
+            Image
+          </div>
+          <div class="col-md-9" *ngIf="!menu.icon_path">
+            <input type="file" #file (change)="imgToBase64($event)" class="form-control" />
+            <div *ngIf="errors.img" class="error-text">You must include a image.</div>
+          </div>
+          <div class="col-md-9" *ngIf="menu.icon_path">
+            <input type="file" id="file" (change)="handleFileInput($event.target.files)" class="form-control" />
+            <!-- <input type="file" #file (change)="imgToBase64()" class="form-control" /> -->
+            <div *ngIf="errors.img" class="error-text">You must include a image.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group validate-has-error" *ngIf="saveError !== ''">
+        <div class="error-text">{{this.saveError}}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="clear()" class="btn btn-white" data-dismiss="modal">Cancel</button>
+        <button type="button" (click)="save()" class="btn btn-white">Save</button>
+      </div>
+
+
+      <!--  <form [formGroup]="complexForm" (ngSubmit)="save(complexForm.value)">
+            <div class="modal-body">
+                <div class="form-group" [ngClass]="{'has-error':errors.title'].valid && complexForm.controls['title'].touched}">
+                    <label class="col-md-3">Menu name</label>
+                    <div class="col-md-9">
+                        <input class="form-control" type="text" placeholder="John" [formControl]="complexForm.controls['title']">
+                        <div *ngIf="complexForm.controls['title'].hasError('required') && complexForm.controls['title'].touched" class="error-text">You must include a title.</div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                
+                <div *ngIf="selectedLevel === 3" class="form-group" [ngClass]="{'has-error':!complexForm.controls['route'].valid && complexForm.controls['route'].touched}">
+                    <label class="col-md-3">Route</label>
+                    <div class="col-md-9">
+                        <input class="form-control" type="text" placeholder="/example/route/etc" [formControl]="complexForm.controls['route']">
+                        <div *ngIf="complexForm.controls['route'].hasError('required') && complexForm.controls['route'].touched" class="error-text">You must include a route.</div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div  *ngIf="selectedLevel === 1" class="form-group" [ngClass]="{'has-error':!complexForm.controls['img'].valid && complexForm.controls['img'].touched}">
+                    <label class="col-md-3">Image</label>
+                    <div class="col-md-9">
+                        <input class="form-control" #file (change)="imgToBase64()" type="file" [formControl]="complexForm.controls['img']">
+                        <div *ngIf="complexForm.controls['img'].hasError('required') && complexForm.controls['img'].touched" class="error-text">You must include a image.</div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                 <div *ngIf="selectedLevel === 3" style="padding: 10px 0px; display: flex;">
+                    <div class="col-md-3" style="padding: 7px 0px;">
+                        Route
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="route" [(ngModel)]="menu.route" class="form-control" placeholder="/example/route/etc" />
+                    </div>
+                </div>
+                <div *ngIf="selectedLevel === 1" style="padding: 10px 0px; display: flex;">
+                    <div class="col-md-3" style="padding: 7px 0px;">
+                        Image
+                    </div>
+                    <div class="col-md-9">
+                        <input type="file" name="icon" #file (change)="imgToBase64()" class="form-control" />
+                    </div>
+                </div> 
+            </div>
+            <div class="form-group validate-has-error" *ngIf="saveError !== ''">
+                <div class="validate-has-error">{{this.saveError}}</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="clear()" class="btn btn-white" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-white">Save</button>
+            </div>
+        </form> -->
+    </div>
+  </div>
+</div>

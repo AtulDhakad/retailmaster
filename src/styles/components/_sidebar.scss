@@ -1,0 +1,222 @@
+.sidebar-menu {
+  .main-menu {
+    a.parent {
+      padding: 5px 5px !important;
+    }
+  }
+  
+  .menu-holder{
+    position: relative;
+    height: 95%;
+    z-index: 51;
+  }
+  // .menu-holder::-webkit-scrollbar, .menu-holder::-moz-scrollbar{
+  //   display: none;
+  // }
+  .slimscroll-grid, .slimscroll-bar{
+    visibility: visible !important;
+  }
+  .slimscroll-wrapper{
+    overflow: visible !important;
+  }
+  .show-overflow{
+    overflow: visible !important;
+  }
+}
+.sidebar-menu.collapsed {
+  width: $sidebar-width;
+  z-index: 10;
+  overflow: visible;
+}
+.main-menu {
+  li {
+    cursor: pointer;
+    a {
+      cursor: pointer;
+      img {
+        width: 70%;
+        padding: 5px;
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+      }
+    }
+  }
+  li:hover, li.active, li.current-nav{
+    background: #252627;
+    img {
+      -webkit-filter: none;
+      filter: none;
+    }
+  }
+}
+
+app-sidenav-megamenu{
+  .sidenav-megamenu {
+    position: absolute;
+    background: $sidenav-selected-color;
+    z-index: 51;
+    height: 100%;
+    transition-property: all;
+    transition-duration: .5s;
+    overflow: hidden;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    width: 0px;
+    top: 0px;
+    left: 90px;
+    span.red {
+      color: $sidebar-red;
+    }
+    span.yellow {
+      color: $sidebar-yellow;
+    }
+  }
+
+  .megamenu-overlay{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    top: 0px;
+    left: 0px;
+    background: rgba(0,0,0, 0.5);
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .megamenu-overlay.show-overlay {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @media #{$xxs-and-down} {
+    .sidenav-megamenu.open{
+      width: 300px;
+      box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  @media #{$xxs-up} {
+    .sidenav-megamenu.open{
+      width: 400px;
+      box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  @media screen and (max-width: 959px) {
+
+    .sidenav-megamenu.open{
+      width: 400px;
+      box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.4);
+    }
+
+  }
+
+  @media screen and (min-width: 960px) {
+
+    .sidenav-megamenu{
+      position: absolute;
+      background: $sidenav-selected-color;
+      z-index: 100;
+      height: 100%;
+      width: 0px;
+      overflow: hidden;
+      transition-property: all;
+      transition-duration: .5s;
+      transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+      div{
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.5s linear;
+      }
+    }
+
+    .sidenav-megamenu.open{
+      width: 490px;
+      div {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+
+    .sidenav-megamenu-xs{
+      display: none !important;
+    }
+  }
+
+  .sidenav-megamenu, .sidenav-megamenu-xs{
+    font-size: 14px;
+    color: #fff;
+    .menu-holder{
+      padding: 20px;
+      .mm-top-heading{
+        font-family: ra-light;
+        position: relative;
+        display: flex;
+        width: 100%;
+        padding-bottom: 18px;
+        font-size: 22px;
+        font-weight: bold;
+        border-bottom: 1px solid #333;
+        text-transform: uppercase;
+        .close-panel{
+          position: absolute;
+          right: 0px;
+          top: 0px;
+          cursor: pointer;
+        }
+        .close-panel:hover{
+          md-icon{
+            color: #aaa;
+          }
+        }
+      }
+      .mm-heading{
+        position: relative;
+        display: flex;
+        width: 100%;
+        padding-bottom: 40px;
+        padding-top: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        color: $sidebar-red;
+      }
+      .menu-bars{
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        vertical-align: top;
+        .menu-bar {
+          width: 49%;
+          padding: 0px 0px 20px 0px;
+          display: inline-block;
+          vertical-align: inherit;
+          h4{
+            font-family: 'Raleway', sans-serif;
+          }
+          h4.header {
+            font-weight: 600;
+            color: #fff;
+            font-size: 14px;
+            cursor: default;
+            color: $sidebar-yellow;
+          }
+          h4.normal {
+            font-size: 12px;
+            color: #eee;
+            cursor: pointer;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 0px;
+          }
+
+          h4.normal:hover {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}

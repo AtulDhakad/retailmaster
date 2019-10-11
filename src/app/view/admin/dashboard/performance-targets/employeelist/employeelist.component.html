@@ -1,0 +1,12 @@
+
+<div id="collapse{{storeName}}"
+	class="col-sm-12 panel-collapse collapse pr-0">
+	<div class="panel-body">
+		<div class="table table-model-2" *ngFor="let em of filteredEmployee" >
+			<div class="col-md-2" >{{em.name}}</div>
+			<div class="slider slider-success col-md-10"
+				 data-max="2000"
+				 data-step="100" (click)="onSelectEmployee(em)" [attr.data-value]="em.target"></div>
+		</div>
+	</div>
+</div>

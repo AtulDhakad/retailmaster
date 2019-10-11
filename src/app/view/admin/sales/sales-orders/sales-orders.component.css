@@ -1,0 +1,185 @@
+.page-dropDown {
+	display: inline-block;
+	float: left;
+	width: 50%;
+}
+
+.page-dropDown select {
+	height: 30px;
+	width: 50%;
+}
+
+.peymentMethodTitle {
+	font-weight: bold;
+	height: 30px;
+	font-size: 10px;
+	padding-top: 5px;
+}
+
+.modal .modal-dialog .modal-content .modal-header {
+	border-bottom-width: 0px;
+}
+
+div.modal.fade {
+	opacity: 1;
+}
+.modal#refundModal {
+  overflow: hidden !important;
+  position: absolute;
+}
+.modal#addPaymentModal {
+  overflow: hidden !important;
+  position: absolute;
+}
+.footerBalance {
+	color: #dc3545;
+	padding-top: 5px;
+	padding-bottom: 5px
+}
+
+.appPaymentFooderHeader {
+	background-color: #dc3545;
+	border-style: solid;
+	border-color: #dc3545;
+	border-width: 1px;
+	height: 25px;
+	font-size: 15px;
+	font-weight: bold;
+	color: White;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.paymentMethodName {
+	font-size: 10px;
+	text-align: center;
+	color: #dc3545;
+}
+
+.appPaymentFooter {
+	background-color: #eeeeee;
+	border-style: solid;
+	border-color: #d0d0d0;
+	border-width: 1px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #a5a6a7;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.appPaymentHeader {
+	background-color: #eeeeee;
+	border-style: solid;
+	border-color: #d0d0d0;
+	border-width: 1px;
+	height: 30px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #a5a6a7;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.setmarginzero {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.noPadding {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.next-previous {
+	display: inline-block;
+	float: right;
+	width: 50%;
+	text-align: right;
+}
+
+ul.pagination {
+	margin: 0;
+}
+
+ul.pagination li {
+	display: inline-block;
+}
+
+div.disabled {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.refuntTotalTitle-bg {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #f1f0f0;
+	vertical-align: middle;
+	height: 32px;
+}
+
+.refundTitle {
+	border-bottom: 1px;
+	border-color: #ccc;
+	font-size: 13px;
+	font-weight: bold;
+	border-bottom-style: solid;
+	padding-top: 25px;
+	padding-bottom: 5px
+}
+
+.refuntTotalTitle-bold {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+.refuntTotalTitle {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	vertical-align: middle;
+}
+
+.header {
+	font-family: sans-serif;
+	font-size: large;
+	font-weight: bold;
+}
+
+ul.pagination input {
+	vertical-align: top;
+	height: 30px;
+	width: 20%;
+}
+
+ul.pagination span {
+	vertical-align: top;
+}
+
+.table.table-model-2.address {
+	min-height: 200px;
+	padding: 30px;
+	border-collapse: initial;
+}
+
+.viewDetail:hover {
+	cursor: pointer;
+}
+
+.headerTitle {
+	color: white;
+}
+
+.padTop5 {
+	padding-top: 5px;
+}
+
+.padTop10 {
+	padding-top: 10px;
+}
+
+tr.viewDetail:active, tr.viewDetail:focus, tr.viewDetail:visited {
+	background-color: gray !important;
+}

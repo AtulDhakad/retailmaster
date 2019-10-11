@@ -1,0 +1,270 @@
+<app-finance-header [enableActions]="true"></app-finance-header>
+<div class="container mt-30 con-btm con-con">
+    <div class="row">
+        <div class="col-md-2 col-sm-5">
+            <div class="left-box">
+                <p style="visibility:hidden">
+                    Some Content here....
+                </p>
+
+            </div>
+        </div>
+        <div class="col-md-7 col-sm-7 mbsp-20">
+            <div class="row">
+                <div class="col-md-9 col-sm-7"><h2 class="stack-head">New Bill</h2></div>
+                <div class="col-md-3 col-sm-5" [style.padding-top]="'14px'">
+                    <p class="stack-01">
+                        <a href="">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </a>
+                        <span>
+                            Pag 1 of 1
+                        </span>
+                        <a href="">
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+
+                    </p>
+                </div>
+            </div>
+
+            <div class="middle-box">
+                <p style="visibility:hidden">
+                    Some Content here....
+                </p>
+
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12 tbsp-20 mbsp-20">
+
+            <div class="row">
+                <div class="col-md-2 col-sm-8"></div>
+                <div class="col-md-10 col-sm-4">
+                    <div class="stack-02">
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5 col-xs-5 clr-right">
+                                <p>
+                                    Line items are
+                                </p>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-xs-7">
+                                <div class="form-group rb-formgroup">
+                                    <select class="form-control inpt-001 select-001 select-002 rb-inpt-001" id="sel1">
+                                        <option>inclusive of GST</option>
+                                        <option>supplier name</option>
+                                        <option>supplier</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-box">
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <select class="form-control inpt-001 select-001 rb-inpt-001" id="sel1">
+                            <option>Supplier</option>
+                            <option>supplier name</option>
+                            <option>supplier</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 clr-right">
+                            <p class="right-box-label">Invoice no</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8">
+                            <div class="form-group">
+                                <input type="text" class="form-control inpt-001 rb-inpt-001">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 clr-right">
+                            <p class="right-box-label">Invoice Date</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8">
+                            <div class="form-group p-relative">
+                                <input type="text" placeholder="12-Aug-2017" class="form-control inpt-001 rb-inpt-001">
+                                <i class="fa fa-calendar calendar-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 clr-right">
+                            <p class="right-box-label">Due Date</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8">
+                            <div class="form-group p-relative">
+                                <input type="text" placeholder="12-Aug-2017" class="form-control inpt-001">
+                                <i class="fa fa-calendar calendar-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 rb-border-01">
+                    <div class="row">
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <p>Invoice line</p>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <a href="">
+                                <i class="fa fa-times rb-icon-01"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <textarea placeholder="line item description" rows="3" class="form-control inpt-001 rb-inpt-001"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 clr-right">
+                            <p class="right-box-label">Item Amount</p>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="form-group">
+                                <input type="text" class="form-control inpt-001 rb-inpt-001">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 clr-right">
+                            <p class="right-box-label">Item GST Type</p>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001 rb-inpt-001" id="sel1">
+                                    <option></option>
+                                    <option>GST type</option>
+                                    <option>GST type1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <select class="form-control inpt-001 select-001 rb-inpt-001" id="sel1">
+                                    <option>Account</option>
+                                    <option>Account name</option>
+                                    <option>Account</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  -->
+                <div class="col-md-12 col-sm-12 rb-border-02">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 text-right">
+                            <a href="" class="add-01">
+                                <i class="fa fa-plus rb-icon-02"></i>
+                                Add another line
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top:4px">
+                        <div class="col-md-5 col-sm-5 clr-right">
+                            <p class="right-box-label">Subtotal</p>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="form-group">
+                                <input type="text" class="form-control inpt-001 rb-inpt-001">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 clr-right">
+                            <p class="right-box-label">Includes GST</p>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="form-group">
+                                <input type="text" class="form-control inpt-001 rb-inpt-001">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 clr-right">
+                            <p class="right-box-label">Total</p>
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                            <div class="form-group">
+                                <input type="text" class="form-control inpt-001 rb-inpt-001">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 rb-border-03">
+                            <div class="row">
+                                <div class="col-md-5 col-sm-5 clr-right">
+                                    <p class="right-box-label">Bank</p>
+                                </div>
+                                <div class="col-md-7 col-sm-7">
+                                    <div class="form-group">
+                                        <select class="form-control inpt-001 select-001 rb-inpt-001" id="sel1">
+                                            <option></option>
+                                            <option>Bank Name</option>
+                                            <option>Bank May</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 col-sm-5 clr-right">
+                                    <p class="right-box-label">Account No</p>
+                                </div>
+                                <div class="col-md-7 col-sm-7">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control inpt-001 rb-inpt-001">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 col-sm-5 clr-right">
+                                    <p class="right-box-label">JomPAY</p>
+                                </div>
+                                <div class="col-md-7 col-sm-7">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="biller code" class="form-control inpt-001 rb-inpt-001">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--  -->
+            <div class="row" style="margin-top:12px">
+                <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <input type="button" class="btn btn-default btn-clear" value="Clear" />
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-xs-7">
+                            <i class="fa fa-times-circle icon-001"></i>
+                            <i class="fa fa-check icon-002"></i>
+                            <input type="button" class="btn btn-default btn-upload" value="Upload" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

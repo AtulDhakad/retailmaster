@@ -1,0 +1,82 @@
+<div class="row">
+
+	<div class="col-sm-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{ isEdit ? 'Edit' : 'Create' }}
+					website</h3>
+			</div>
+			<div class="panel-body" *ngIf="selectedWebSite">
+				<div *ngIf="loading" class="loaderScreen">
+					<img src="assets/images/loading.gif">
+				</div>
+				<div class="col-sm-12">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Website
+							name*</label>
+
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="field-1"
+								*ngIf="selectedWebSite" [(ngModel)]="selectedWebSite.name"
+								placeholder="domain.xyz">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Code*</label>
+
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="field-1"
+								*ngIf="selectedWebSite" [(ngModel)]="selectedWebSite.code"
+								placeholder="Code">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Sort
+							Order</label>
+
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="field-1"
+								*ngIf="selectedWebSite" [(ngModel)]="selectedWebSite.sort_order"
+								placeholder="Sort Order">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Default
+							Store</label>
+
+						<div class="col-sm-10">
+							<select #defaultStore *ngIf="selectedWebSite"
+								(change)="selectedDefaultSt(defaultStore.value)"
+								class="form-control">
+								<option *ngFor="let st of storeGroupList" [value]="st.group_id"
+									[selected]="st.group_id === selectedWebSite.default_group_id">{{st.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1"></label>
+						<div class="col-sm-10">
+							<a type="button" class="btn btn-white"
+								(click)="onSave(selectedWebSite)">Save Web Site</a><a
+								class="btn btn-danger" *ngIf="isEdit" (click)="deleteWebsite()">Delete
+								Web Site</a>
+							<!-- 								<a class="btn btn-white" (click)="resetWebsite()">Reset</a>  -->
+							<a class="btn btn-warning" (click)="closePanel()">Cancel</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<!-- panel end -->
+
+</div>

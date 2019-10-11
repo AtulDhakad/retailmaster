@@ -1,0 +1,83 @@
+<!-- Top Header -->
+<div class="col-md-12 col-sm-12 col-xs-12 top-header">
+    <div class="row">
+        <div class="space" *ngIf="storeData">
+            <div class="col-md-4 col-sm-4 col-xs-5">
+                <h2 class="text-left mt-0 mb-0">
+                    <a (click)="openView('home')" class="top-header-logo">
+                        <img src="assets/so-images/logo-icon.png" class="img-responsive top-header-icon" />
+                        <span class="logo-span uppercase">{{storeData.name}}</span>
+                    </a>
+                </h2>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4 hidden-xs">
+                <p class="text-center top-header-text text-yellow">
+                    {{pageData.message}}
+                </p>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-7 text-right mt-08 top-icons">
+                
+<!--                 <a id="iconSearch" (click)="toggleSearchOn()"> -->
+<!--                     <img src="assets/so-images/ic-01.png" class="img-responsive top-header-icon" /> -->
+<!--                 </a> -->
+                <a (click)="toggleFullScreenOn()">
+                    <img src="assets/so-images/fullscreen.png" class="img-responsive top-header-icon" />
+                </a>
+                <a (click)="openView('cart')">
+                    <img src="assets/so-images/ic-02.png" class="img-responsive top-header-icon" />
+                </a>
+                <a data-toggle="modal" data-target="#myModal" (click)="onCustomerSearchClick()">
+                    <img src="assets/so-images/ic-03.png" class="img-responsive top-header-icon" />
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Title Bar -->
+<div class="col-md-12 col-sm-12 col-xs-12 title-bar">
+    <div class="row">
+        <div class="space">
+            <div class="col-md-5 col-sm-5 col-xs-5">
+                <h2 class="text-left uppercase">{{view.name}}</h2>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-2 text-center" *ngIf="showSearch">
+                <button class="cat-btn" (click)="toggleCategories = !toggleCategories">
+                    <span>{{selectedCategory.name}}</span>
+                </button>
+                <div class="row categories-dropdown" [class.show]="toggleCategories">
+                    <div class="col-md-12 no-padding">
+                        <div class="space">
+
+                            <ul class="left-sidebar-list">
+                                <li *ngFor="let category of categories;">
+                                    <a (click)="changeCategory(category);">
+                                        <i class="fa fa-circle-o list-circle" aria-hidden="true"></i>
+                                        {{category.name}}
+                                    </a>
+                                </li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-5 col-xs-5" >
+            	<input type="text" class="form-control txt-search" *ngIf="showSearch" #inputSearch
+            	 placeholder="Enter product, SKU or scan barcode"  style="width: 300px;height:35px;margin-left: 50px;"
+            	  [class.show]="toggleCategories"  [(ngModel)]="searchString" (keyup)="onKeyUp($event);"/>
+            	<a id="iconSearch" (click)="onSearchClick()">
+                    <img src="assets/so-images/ic-04.png" class="img-responsive top-header-icon-search" />
+                </a>
+                <h2 class="text-right" *ngIf="pageData.customerName.length">
+                    <span style="padding-right: 20px">{{selectedCustomer.firstname}} {{selectedCustomer.lastname}}</span>
+<!--                     <img src="assets/so-images/cancel-customer.png" class="img-responsive pull-right" style="cursor: pointer; width: 27px;"/> -->
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="clear:both"></div>

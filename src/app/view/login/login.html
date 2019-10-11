@@ -1,0 +1,33 @@
+<div class="login-container">
+  <div class="form-container">
+    <div class="row">
+      <div class="label">Username / Email</div>
+      <div class="control"><input type="text" name="email"></div>
+    </div>
+    <div class="row">
+      <div class="label">Password</div>
+      <div class="control"><input type="password" name="pass"></div>
+    </div>
+    <div class="row btn-row">
+      <div class="label rem-me">Remember me</div>
+      <div class="control submit-container">
+        <div class="checkbox">
+          <input type="checkbox" name="rem">
+        </div>
+        <div class="submit-btn">
+          <button type="button" [routerLink]="['/dashboard']">login</button>
+        </div>
+        <div class="mobile-submit">
+          <input type="checkbox" name="rem"> &nbsp;
+          <button type="button" [routerLink]="['/dashboard']">login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="logo-container">
+      <div class="icon-container">
+        <img src="assets/img/retailmaster_logo.jpg"/>
+      </div>
+      <div class="title-heading">Multi-channel retail management in a single place</div>
+  </div>
+</div>

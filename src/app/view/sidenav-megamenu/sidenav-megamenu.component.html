@@ -1,0 +1,28 @@
+<div class="megamenu-overlay" (mouseover)="closeMegaMenu()"
+	[class.show-overlay]="open"></div>
+<div class="sidenav-megamenu" [class.open]="open">
+	<div class="menu-holder">
+		<div class="content-grid mdl-grid">
+			<div class="mm-top-heading">
+				<span class="red">RETAIL</span> <span class="yellow">MASTER</span>
+				<div class="close-panel" (click)="closeMegaMenu()">
+					<i class="fa fa-arrow-left"></i>
+				</div>
+			</div>
+			<div class="mm-heading">
+				<span>{{item.menu_title}}</span>
+			</div>
+		</div>
+		<div class="content-grid mdl-grid menu-bars" *ngIf="item.submenu">
+			<ng-container *ngFor="let menu of item.submenu; let i = index">
+			<div class="menu-bar" *ngIf="menu.is_active == 1">
+				<!-- Original Code<div class="menu-bar" *ngIf="menu.is_active ==1"> -->
+				<h4 class="header">{{menu.menu_title}}</h4>
+				<ng-container *ngFor="let child of menu.submenu">
+				<h4 class="normal" *ngIf="child.is_active == 1" (click)="closeMegaMenu(true); navigate(child.route)" >{{child.menu_title}}</h4>
+				</ng-container>
+			</div>
+			</ng-container>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,848 @@
+<div class="row">
+	<div class="row col-sm-12 padTop5">
+		<div class="alert"
+			[ngClass]="{'alert-success' : alertType === SUCCESS,
+															'alert-danger' : alertType === WARNING}"
+			*ngIf="message.length > 0 ? true : false">
+			<b>{{message}}</b>
+		</div>
+	</div>
+	<div *ngIf="loading" class="loaderScreen">
+		<img src="assets/images/loading.gif">
+	</div>
+
+	<div class="col-md-4 col-sm-6">
+		<div class="row padTop10">
+			<div class="col-md-8 padTop5">
+				<div class="input-group form-group input-group-minimal">
+					<span class="input-group-addon"> <i class="linecons-search"
+						(click)="getOrderBySearch()"></i>
+					</span> <input type="input" class="form-control"
+						[(ngModel)]="searchString" (keyup)="onKeyUp($event);"
+						placeholder="Search by order ID, name, phone">
+				</div>
+			</div>
+			<div class="col-md-4 padTop5">
+				<select #cmbStore (change)="onSelectedStore(cmbStore.value)"
+					class="form-control">
+					<option *ngFor="let st of storeList" [value]="st.store_id">{{st.name}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="row custom-buttons padTop5">
+			<div class="col-md-4">
+				<button class="btn btn-orange btn-block"
+					[ngClass]="isPendingClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('pending')">Pending</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-blue btn-block"
+					[ngClass]="isProcessingClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('processing')">Processing</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-success btn-block"
+					[ngClass]="isCompleteClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('complete')">Complete</button>
+			</div>
+			<div class="col-md-4 pt-1">
+				<button class="btn btn-danger btn-block"
+					[ngClass]="isCancelledClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('canceled')">Canceled</button>
+			</div>
+			<div class="col-md-4 pt-1">
+				<button class="btn btn-cyan  btn-block"
+					[ngClass]="isRefundedClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('refunded')">Refunded</button>
+			</div>
+			<div class="col-md-4 pt-1">
+				<button class="btn btn-brown btn-block"
+					[ngClass]="isOnHoldClicked ? 'active' : '' "
+					(click)="onStatucChangeClick('onhold')">On Hold</button>
+			</div>
+		</div>
+		<!-- 		<div class="row"> -->
+		<!-- 			<div class="col-md-2 text-right"></div> -->
+		<!-- 			<div class="col-md-10"> -->
+		<!-- 				<button class="btn btn-white" style="margin-left: 10px;" -->
+		<!-- 					(click)="getOrderBySearch()">Search</button> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
+
+		<div class="row pt-1">
+			<div class="row orderlisting">
+				<div class="rowList"
+					*ngFor="let dropShipOrder of dropShipsalesOrderMap; let m = index">
+
+					<div class="text-center header">{{dropShipOrder.orderDate |
+						date:'fullDate'}}</div>
+					<ul style="list-style: none; padding-left: 0px">
+						<li *ngFor="let od of dropShipOrder.list; let i = index"
+							class="childList">
+							<div class="row orderlistingchild"
+								[class.active]="(m.toString() + i.toString()).toString() === selectedRow"
+								[ngClass]="getClassByStatus(od.status)"
+								(click)="selectedOrder(od, m, i);">
+								<div class="col-md-6 col-sm-6 order-info">
+									{{od.increment_id}} <span class="block">{{od.customer_firstname}}
+										{{od.customer_lastname}}</span>
+								</div>
+								<div class="col-md-3 col-sm-3 text-center time-info">{{od.created_at
+									| date : 'shortTime' }}</div>
+								<div class="col-md-3 col-sm-3 text-left order-info">
+									RM{{od.total_payable | number : '1.2-2'}}<br> <span>Saras</span>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row text-right " *ngIf="dropShipsalesOrderMap.length > 0">
+				<div class="col-md-12 " style="padding-right: 30px">
+					<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+						<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+							(click)="setPage(pager.currentPage - 1)"><</a></li>
+						<li *ngFor="let page of pager.pages"
+							[ngClass]="{active:pager.currentPage === page}"><a
+							(click)="setPage(page)">{{page}}</a></li>
+						<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+							<a (click)="setPage(pager.currentPage + 1)">></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8 col-sm-6" *ngIf="selectedOrderDetails">
+		<div class="order-heading-tip"
+			[ngClass]="getClassByStatus(selectedOrderDetails.status)">Order
+			# {{selectedOrderDetails.increment_id}} |
+			{{selectedOrderDetails.created_on | date : 'dd-MMM-yyyy'}} |
+			{{selectedOrderDetails.store_name}}</div>
+
+		<div class="order-info-tip">
+			<table>
+				<tr>
+					<td align="left"><span class="header"
+						style="font-size: x-large;"><strong>RM{{getSubtotal()
+								| number : '1.2-2'}}</strong></span></td>
+					<td align="center"><span class="header">Amount paid<span
+							class="block"><strong>RM{{getTotalAmountPaid() |
+									number : '1.2-2'}}</strong> </span>
+					</span></td>
+					<td align="center"><span class="header">Amount due <span
+							class="block"><strong>RM{{getTotalDue() | number
+									: '1.2-2'}}</strong> </span>
+					</span></td>
+
+					<td align="right">Status: <span class="semi">{{selectedOrderDetails.status}}</span>
+						<br />Managed by: <span class="semi">Saras</span></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="button-wrapper">
+			<div class="col-sm-2">
+				<button class="btn btn-default btn-sm btn-block"
+					(click)="onChangeOrder()">Change order</button>
+			</div>
+			<div class="col-sm-2 pl-0">
+				<button class="btn btn-default btn-sm btn-block"
+					data-toggle="#cancelModal" data-target="#cancelModal"
+					(click)="openModal(canceltemplate)">Cancel order</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-default  btn-sm btn-block"
+					(click)="onRefundClick()">Create refund</button>
+			</div>
+
+			<div class="col-sm-2">
+				<button class="btn btn-default  btn-sm btn-block">Print
+					order</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-default  btn-sm btn-block">Print
+					invoice</button>
+			</div>
+
+			<div class="col-sm-2 pr-0">
+				<button class="btn btn-default  btn-sm btn-block"
+					(click)="onAddPaymentClick()">Add payment</button>
+			</div>
+		</div>
+
+		<div class="col-md-12 pt-1 pl-0 pr-0">
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: #d3d3d3;">
+						<th>Product</th>
+						<th>Original price</th>
+						<th>Price</th>
+						<th>Qty</th>
+						<th>Subtotal</th>
+						<th>Tax amount</th>
+						<th>Row total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="border-bottom" *ngFor="let odItem of selectedOrderItems">
+						<td class="reverse-wrap">{{odItem.name}} <span class="block"
+							style="color: #d3d3d3; font-style: italic;">{{odItem.sku}}</span></td>
+						<td>RM{{odItem.price | number : '1.2-2'}}</td>
+						<td>RM{{getSpecialPrice(odItem) | number : '1.2-2'}}</td>
+						<td>{{odItem.quantity}}</td>
+						<td>RM{{getItemSubtotal(odItem) | number : '1.2-2'}}</td>
+						<td class="reverse-wrap">RM{{(getItemSubtotal(odItem) *
+							taxRt) /100 | number : '1.2-2'}}</td>
+						<td>RM{{getTotalPrice(odItem) | number : '1.2-2'}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-8 p-0">
+			<h4 class="tabletitle">Store Credit History</h4>
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th>Date</th>
+						<th>Action</th>
+						<th>Change</th>
+						<th>Balance</th>
+						<th>Reference</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<!-- 					<tr> -->
+					<!-- 						<td>10-Apr-17</td> -->
+					<!-- 						<td>Credit</td> -->
+					<!-- 						<td>RM0.20 +</td> -->
+					<!-- 						<td>RM0.20</td> -->
+					<!-- 						<td>RESELLER99999</td> -->
+					<!-- 					</tr> -->
+					<!-- 					<tr> -->
+					<!-- 						<td>10-Apr-17</td> -->
+					<!-- 						<td>Credit</td> -->
+					<!-- 						<td>RM0.20 +</td> -->
+					<!-- 						<td>RM0.20</td> -->
+					<!-- 						<td>RESELLER99999</td> -->
+					<!-- 					</tr> -->
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-4 pl-1 pr-0">
+			<table class="table table-model-2">
+				<tbody>
+					<tr>
+						<td class="text-right"><strong>Subtotal incl. GST</strong></td>
+						<td class="reverse-wrap">RM{{getSubtotal() | number :
+							'1.2-2'}}</td>
+					</tr>
+					<tr>
+						<td class="text-right">Shipping & handling incl. GST</td>
+						<td class="reverse-wrap">RM{{selectedOrderDetails.shipping_amount
+							| number : '1.2-2'}}</td>
+					</tr>
+					<tr>
+						<td class="text-right"><strong>Grand total payable</strong></td>
+						<td class="reverse-wrap"><strong>RM {{getSubtotal()
+								| number : '1.2-2'}}</strong></td>
+					</tr>
+					<tr>
+						<td class="text-right">Total paid</td>
+						<td class="reverse-wrap">RM{{getTotalAmountPaid() | number :
+							'1.2-2'}}</td>
+					</tr>
+					<tr>
+						<td class="text-right"><strong>Balance due</strong></td>
+						<td class="reverse-wrap"><strong>RM{{getTotalDue() |
+								number : '1.2-2'}}</strong></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div class="col-md-12 p-0">
+			<h4 class="tabletitle">Payment History</h4>
+			<table class="table table-model-2 ">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th>Payment method</th>
+						<th>Amount</th>
+						<th>Date</th>
+						<th>Time</th>
+						<th>Detail1</th>
+						<th>Detail2</th>
+						<th>Added by</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr *ngFor="let pp of selectedOrderPayments">
+						<td>{{pp.name}}</td>
+						<td>RM{{pp.enteredAmt | number : '1.2-2'}}</td>
+						<td>{{getDate(pp.date)}}</td>
+						<td>{{pp.timeString}}</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><a class="text-danger" (click)="onPaymentDelete(pp)">Delete</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div class="col-md-12 p-0">
+			<h4 class="tabletitle">Shipping History</h4>
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th>Shipping date</th>
+						<th>Carrier</th>
+						<th>Tariff</th>
+						<th>Tracking code</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td class="text-danger">Delete</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-6 pl-0">
+			<h4 class="tabletitle">
+				Billing Address <i class="linecons-pencil text-right"
+					(click)="showAddressPopup = true; isShippingAddress = false;"></i>
+			</h4>
+			<table class="table table-model-2" style="min-height: 200px;">
+				<tr>
+					<td>
+						<div class="row"
+							style="min-height: 200px; background-color: #fff; margin-right: 5px; margin-left: 5px">
+							<div class="col-md-12" style="padding-top: 5px">{{billingAddress.firstname}}
+								{{billingAddress.lastname}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{billingAddress.street}}</div>
+							<div class="col-md-12" style="padding-top: 5px">
+								{{billingAddress.region}} <br> {{billingAddress.postcode}}
+							</div>
+							<div class="col-md-12" style="padding-top: 5px">{{billingAddress.country_id}}</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="col-md-6 pr-0">
+			<h4 class="tabletitle">
+				Shipping Address <i class="linecons-pencil text-right"
+					(click)="showAddressPopup = true; isShippingAddress = true;"></i>
+			</h4>
+			<table class="table table-model-2" style="min-height: 200px;">
+				<tr>
+					<td>
+						<div class="row"
+							style="min-height: 200px; background-color: #fff; margin-right: 5px; margin-left: 5px">
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.firstname}}
+								{{shipingAddress.lastname}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.street}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.country_id}}
+								{{shipingAddress.region}}</div>
+							<div class="col-md-12" style="padding-top: 5px">{{shipingAddress.postcode}}</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-md-12 p-0">
+			<h4 class="tabletitle">Refund History</h4>
+			<table class="table table-model-2">
+				<thead>
+					<tr style="background-color: transparent;">
+						<th class="text-right">Subtotal refund</th>
+						<th class="text-right">Shipping refund</th>
+						<th class="text-right">Adjustment refund (-)</th>
+						<th class="text-right">Adjustment fee (+)</th>
+						<th class="text-right">Tax refund</th>
+						<th class="text-right">Total refund</th>
+					</tr>
+				</thead>
+				<tbody class="text-right" style="padding-left: 10px;">
+					<tr *ngFor="let scm of salesCreditMemoList">
+						<td>{{scm.base_subtotal | number : '1.2-2'}}</td>
+						<td>{{scm.shipping_amount | number : '1.2-2'}}</td>
+						<td>{{scm.base_adjustment_negative | number : '1.2-2'}}</td>
+						<td>{{scm.base_adjustment_positive | number : '1.2-2'}}</td>
+						<td>{{scm.tax_amount | number : '1.2-2'}}</td>
+						<td>{{scm.base_grand_total | number : '1.2-2'}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<ng-template #canceltemplate>
+<div class="modal-header">
+	<h4 class="modal-title pull-left">Cancel order</h4>
+	<button type="button" class="close pull-right" aria-label="Close"
+		(click)="modalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+
+<div class="modal-body">
+	<div class="row form-group">
+		<div class="col-sm-12">
+			Order status will change to <b>Cancelled</b>.
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<div class="col-sm-12">
+		<button type="button" class="btn btn-info"
+			(click)="onCancelOrderClick()" data-dismiss="modal">Ok</button>
+		<button type="button" class="btn btn-white" data-dismiss="modal"
+			(click)="modalRef.hide()">Cancel</button>
+	</div>
+</div>
+</ng-template>
+<div class="modal" id="refundModal" *ngIf="selectedOrderDetails"
+	[style.display]="showRefundPopup ? 'block' : 'none'">
+	<div class="modal-dialog" style="width: 90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				`
+				<button type="button" class="close" data-dismiss="modal"
+					(click)="showRefundPopup = false" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" style="font-weight: 600;">Refund order</h4>
+			</div>
+
+			<div class="modal-body" style="min-height: 400px">
+				<div class="row form-group">
+					<div class="col-sm-12 refundTitle">
+						<label class="control-label " style="font-weight: bold;">Items
+							to Refund</label>
+					</div>
+					<div class="row col-sm-12 padTop5">
+						<div class="alert"
+							[ngClass]="{'alert-success' : alertType === SUCCESS,
+															'alert-danger' : alertType === WARNING}"
+							*ngIf="message.length > 0 ? true : false">
+							<b>{{message}}</b>
+						</div>
+					</div>
+					<div class="col-sm-12" style="font-weight: bold; border-top: 1px;">
+						<div class="col-sm-3">Product</div>
+						<div class="col-sm-1">Price</div>
+						<div class="col-sm-1">Qty</div>
+						<div class="col-sm-1">Qty to refund</div>
+						<div class="col-sm-1">Subtotal</div>
+						<div class="col-sm-1">Tax amount</div>
+						<div class="col-sm-1">Row total</div>
+						<div class="col-sm-2">Return to stock</div>
+						<div class="col-sm-1">Damaged</div>
+					</div>
+					<div class="col-sm-12 pt-1"
+						*ngFor="let orderItem of selectedOrderItems">
+						<div class="col-sm-3">{{orderItem.name}}</div>
+						<div class="col-sm-1">RM{{orderItem.price | number :
+							'1.2-2'}}</div>
+						<div class="col-sm-1">{{orderItem.quantity}}</div>
+						<div class="col-sm-1">
+							<input type="input" style="width: 30px; text-align: center;"
+								name="quantity" [(ngModel)]="orderItem.refundQty" />
+						</div>
+						<div class="col-sm-1">RM{{orderItem.refundItemSubTotal |
+							number : '1.2-2'}}</div>
+						<div class="col-sm-1">RM{{orderItem.refundItemTax | number :
+							'1.2-2'}}</div>
+						<div class="col-sm-1">RM{{orderItem.refundRowTotal | number
+							: '1.2-2'}}</div>
+						<div class="col-sm-2" style="padding-left: 50px">
+							<input type="radio" [name]="orderItem.id"
+								(change)="onReturnOfStockRadio(orderItem);">
+						</div>
+						<div class="col-sm-1" style="padding-left: 50px">
+							<input type="radio" [name]="orderItem.id"
+								(change)="onDamageRadio(orderItem);">
+						</div>
+					</div>
+					<div class="col-sm-12 pt-1 border border-dark border-top" style="">
+						<div class="col-sm-6"></div>
+						<label class="control-label" for="field-1"><button
+								type="button" class="btn btn-info" style="padding-top: 3px"
+								(click)="OnUpdateQtyClick()">Update Qty's</button></label>
+					</div>
+					<div class="col-sm-12 refundTitle">Order total</div>
+					<div class="col-sm-6" style="padding-top: 5px">
+						<label class="control-label"
+							style="font-weight: bold; padding-top: 10px">Credit memo
+							comments</label><br> <label class="control-label" for="field-1">Comment
+							text</label><br> <input style="width: 100%; height: 50px"
+							[(ngModel)]="comments">
+					</div>
+					<div class="col-sm-6">
+						<label class="control-label" for="field-1"
+							style="font-weight: bold; padding-top: 10px">Refund
+							totals</label>
+						<div class="row" style="padding-right: 35px; padding-top: 10px">
+							<div class="col-sm-6 refuntTotalTitle-bg">Subtotal</div>
+							<div class="col-sm-6 text-right refuntTotalTitle-bg">RM{{getSubtotalRefund()
+								| number : '1.2-2'}}</div>
+							<div class="col-sm-6 refuntTotalTitle">Refund shipping</div>
+							<div class="col-sm-6 text-right refuntTotalTitle">
+								<input type="input" style="width: 60px; text-align: center;"
+									[(ngModel)]="shipping_amount"
+									(input)="onShippingAmountChange($event.target.value)" />
+							</div>
+							<div class="col-sm-6 refuntTotalTitle-bg">Adjustment refund</div>
+							<div class="col-sm-6 text-right refuntTotalTitle-bg">
+								<input type="input" style="width: 60px; text-align: center;"
+									[(ngModel)]="adjustmentrefund"
+									(input)="onAdjustmentRefundChange($event.target.value)" />
+							</div>
+							<div class="col-sm-6 refuntTotalTitle">Adjustment fee</div>
+							<div class="col-sm-6 text-right refuntTotalTitle">
+								<input type="input" style="width: 60px; text-align: center;"
+									[(ngModel)]="adjustmentFee"
+									(input)="onAdjustmentFeeChange($event.target.value)" />
+							</div>
+							<div class="col-sm-6 refuntTotalTitle-bg">Tax</div>
+							<div class="col-sm-6 text-right refuntTotalTitle-bg">RM{{getRefundTaxSubtotal()
+								| number : '1.2-2'}}</div>
+							<div class="col-sm-6 refuntTotalTitle-bold">Grand total</div>
+							<div class="col-sm-6 text-right refuntTotalTitle-bold">RM{{getRefundGrandTotal()|
+								number : '1.2-2'}}</div>
+							<div class="col-sm-6" style="padding-top: 50px">
+								<input type="checkbox">&nbsp;&nbsp;Refund to store
+								credit
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<div class="col-sm-12">
+					<button type="button" class="btn btn-info"
+						(click)="onRefundOrderClick()" data-dismiss="modal">Submit
+						Refund</button>
+					<button type="button" class="btn btn-white" data-dismiss="modal"
+						(click)="showRefundPopup = false;">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" id="editAddressModal"
+	[style.display]="showAddressPopup ? 'block' : 'none'">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					(click)="showAddressPopup = false" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" style="font-weight: 600;">Address</h4>
+			</div>
+			<div class="modal-body" style="min-height: 500px">
+				<div class="row col-sm-12 padTop5">
+					<div class="alert"
+						[ngClass]="{'alert-success' : alertType === SUCCESS,
+															'alert-danger' : alertType === WARNING}"
+						*ngIf="message.length > 0 ? true : false">
+						<b>{{message}}</b>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<input type="text" class="form-control input-text"
+								placeholder="First name" name="firstname" *ngIf="billingAddress"
+								[(ngModel)]="billingAddress.firstname" />
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<input type="text" class="form-control input-text"
+								name="lastname" placeholder="Last name"
+								[(ngModel)]="billingAddress.lastname" />
+						</div>
+					</div>
+					<div class="col-md-12 col-sm-12">
+						<div class="form-group">
+							<input type="text" class="form-control input-text"
+								placeholder="Company name" name="company"
+								[(ngModel)]="billingAddress.company" />
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<input type="email" class="form-control input-text"
+								placeholder="Email address" name="email"
+								[(ngModel)]="billingAddress.email" />
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<input type="text" class="form-control input-text"
+								placeholder="Phone number" name="telephone"
+								[(ngModel)]="billingAddress.telephone" />
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<select #cmbBillingCountry
+								(change)="onBillingSelectedCountry(cmbBillingCountry.value)"
+								class="form-control">
+								<option *ngFor="let ct of countryList" [value]="ct.country_id"
+									[selected]="ct.country_id === billingAddress.country_id">{{ct.country_name}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<select #cmbBillingRegion
+								(change)="onBillingSelectedRegion(cmbBillingRegion.value)"
+								class="form-control">
+								<option *ngFor="let rg of billingRegionsList"
+									[value]="rg.region_id"
+									[selected]="rg.region_id === billingAddress.region_id">{{rg.default_name}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<input type="text" class="form-control input-text" name="city"
+								placeholder="City/Town" [(ngModel)]="billingAddress.city" />
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="form-group">
+							<input type="text" class="form-control input-text"
+								placeholder="Postal code" name="postcode"
+								[(ngModel)]="billingAddress.postcode" />
+						</div>
+					</div>
+					<div class="col-md-12 col-sm-12">
+						<div class="form-group">
+							<input type="text" class="form-control input-text"
+								placeholder="Street address" name="street"
+								[(ngModel)]="billingAddress.street" />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="col-md-4 col-sm-4"></div>
+						<div class="col-md-4 col-sm-4">
+							<button (click)="showAddressPopup = false" type="submit"
+								class="btn back-btn">Cancel</button>
+						</div>
+						<div class="col-md-4 col-sm-4">
+							<button type="submit" class="btn contact-btn"
+								(click)="onUpdateContact();">Update</button>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" id="addPaymentModal" *ngIf="selectedOrderDetails"
+	[style.display]="showAddPaymentPopup ? 'block' : 'none'">
+	<div class="modal-dialog" style="width: 70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				`
+				<button type="button" class="close" data-dismiss="modal"
+					(click)="showAddPaymentPopup = false" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" style="font-weight: 600;">Add Payment</h4>
+			</div>
+
+			<div class="modal-body" style="min-height: 400px">
+				<div class="row col-sm-12 padTop5">
+					<div class="alert"
+						[ngClass]="{'alert-success' : alertType === SUCCESS,
+															'alert-danger' : alertType === WARNING}"
+						*ngIf="message.length > 0 ? true : false">
+						<b>{{message}}</b>
+					</div>
+				</div>
+				<div class="row appPaymentHeader">
+					<div class="col-md-8">Add payment for order
+						{{selectedOrderDetails.increment_id}}</div>
+					<div class="col-md-4 text-right">Total amount due:
+						RM{{getTotalDue() | number : '1.2-2'}}</div>
+				</div>
+
+				<div class="row pt-1 setmarginzero">
+					<div class="col-md-2 text-left">
+						<strong>Payment methods</strong>
+					</div>
+					<div class="col-md-8 text-left">
+						<strong>Amount in RM</strong>
+					</div>
+					<div class="col-md-2 text-right noPadding">
+						<strong>Paid</strong>
+					</div>
+				</div>
+				<div class="row pt-1 setmarginzero"
+					*ngFor="let pp of paymentProcessArr">
+					<div class="col-md-2 text-left  peymentMethodTitle">{{pp.name}}</div>
+					<div class="col-md-2" [ngClass]="{'disabled':!pp.enable}">
+						<input type="number" placeholder="Amount" style="height: 30px"
+							[(ngModel)]="pp.enteredAmt" />
+					</div>
+					<div class="col-md-2" [ngClass]="{'disabled':!pp.enable}"
+						style="padding-right: 0px">
+						<input type="text" [(ngModel)]="pp.date" placeholder="Datepicker"
+							class="form-control"
+							[ngStyle]="{'display': pp.showDate=== true ? 'block' : 'none' }"
+							bsDatepicker> <select
+							class="hidden-form hidden-form active" [(ngModel)]="pp.cardType"
+							[ngStyle]="{'display': pp.showCardTypeCombo=== true ? 'block' : 'none' }"
+							style="width: 100%;" #cmbCardType>
+							<option *ngFor="let ct of cardTypeList" [value]="ct.name">{{ct.name}}</option>
+						</select> <select class="hidden-form hidden-form active"
+							style="width: 100%" [(ngModel)]="pp.bankId"
+							[ngStyle]="{'display': pp.showBankCombo=== true ? 'block' : 'none' }">
+							<option *ngFor="let bnk of bankList" [value]="bnk.bank_id">{{bnk.name}}</option>
+						</select> <input type="input" placeholder="Purchase order no."
+							[(ngModel)]="pp.orderNo"
+							[style.display]="pp.showPoNo?'block':'none'" style="height: 30px" />
+						<input type="input" placeholder="Discount voucher no."
+							[(ngModel)]="pp.discountVoucherNo"
+							[style.display]="pp.showDiscVoucherNo?'block':'none'"
+							style="height: 30px" /> <input type="input"
+							[style.display]="pp.showGiftVoucerNo?'block':'none'"
+							[(ngModel)]="pp.giftVoucherNo" placeholder="Gift voucher no."
+							style="height: 30px" />
+
+					</div>
+					<div class="col-md-2 " [ngClass]="{'disabled':!pp.enable}"
+						style="padding-right: 0px">
+						<timepicker [(ngModel)]="pp.time" [showSpinners]="false"
+							[showMeridian]="true" [hourStep]="1" [minuteStep]="1"
+							[ngStyle]="{'display': pp.showTime === true ? 'block' : 'none', 'margin-top':'-10px'}"></timepicker>
+						<input type="text" class="hidden-form hidden-form-xsmall active"
+							[style.display]="pp.showChequeNo ?'block':'none'"
+							[(ngModel)]="pp.chequeNo" style="width: 100%"
+							placeholder="Cheque no."> <input type="text"
+							[(ngModel)]="pp.date" placeholder="Datepicker"
+							class="form-control"
+							[ngStyle]="{'display': pp.showPoDate=== true ? 'block' : 'none' }"
+							bsDatepicker>
+					</div>
+					<div class="col-md-2" [ngClass]="{'disabled':!pp.enable}">
+						<input type="text" [(ngModel)]="pp.date" placeholder="Datepicker"
+							class="form-control"
+							[ngStyle]="{'display': pp.showChequeDate=== true ? 'block' : 'none' }"
+							bsDatepicker>
+					</div>
+					<div class="col-md-1" [ngClass]="{'disabled':!pp.enable}"
+						style="padding-top: 5px">
+						<img src="assets/images/Cancel-24.png"
+							[style.display]="pp.savedAmt > 0 ?'block':'none'"
+							(click)="onCancelPaymentAmount(pp)"
+							class="img-responsive v-align-middle close-icon" /> <img
+							src="assets/images/Add-24_black.png"
+							[style.display]="pp.savedAmt === 0 ?'block':'none'"
+							class="img-responsive v-align-middle"
+							(click)="onSavePaymentAmount(pp)" />
+					</div>
+					<div class="col-md-1 text-right noPadding">RM{{pp.savedAmt |
+						number : '1.2-2'}}</div>
+				</div>
+			</div>
+			<div class="row appPaymentHeader">
+				<div class="col-md-12 text-right footerBalance">Balance due:
+					RM{{totalAmountPaid | number : '1.2-2'}}</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row appPaymentFooderHeader">
+					<div class="col-md-12 text-center">Select payment method</div>
+				</div>
+				<div class="row appPaymentFooter">
+					<div class="col-md-1 pt-1  pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('GIRO')">
+						<img src="assets/images/pm-IGIRO.png"
+							class="img-responsive pm-general v-align-middle " /> Interbank
+						IGIRO
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('IBT')">
+						<img src="assets/images/pm-IBT.png"
+							class="img-responsive pm-general v-align-middle" /> Instant bank
+						transfer
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('BAD')">
+						<img src="assets/images/pm-BAD.png"
+							class="img-responsive pm-general v-align-middle " /> Bank/ATM
+						deposit
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('CDC')">
+						<img src="assets/images/pm-CDC.png"
+							class="img-responsive pm-general v-align-middle " /> Credit or
+						debit card
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('C')">
+						<img src="assets/images/pm-C.png"
+							class="img-responsive pm-general v-align-middle " />Cash
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('CHQ')">
+						<img src="assets/images/pm-CIH.png"
+							class="img-responsive pm-general v-align-middle " />Cheque
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('PO')">
+						<img src="assets/images/pm-PO.png"
+							class="img-responsive pm-general v-align-middle" /> Purchase
+						order
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('DISC')">
+						<img src="assets/images/pm-DISC.png"
+							class="img-responsive pm-general v-align-middle " /> Discount
+						voucher
+					</div>
+					<div class="col-md-1 pt-1 pl-1 text-center paymentMethodName"
+						(click)="onPaymentMethodSelected('GIFT')">
+						<img src="assets/images/pm-GIFT.png"
+							class="img-responsive pm-general v-align-middle" />Gift
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-2" style="padding-top: 20px">
+						<button (click)="onAddPaymentSubmit()" data-dismiss="modal">Submit</button>
+					</div>
+				</div>
+				<!-- 				<div class="col-sm-12"> -->
+				<!-- 					<button type="button" class="btn btn-info" -->
+				<!-- 						(click)="onCancelOrderClick()" data-dismiss="modal">Submit -->
+				<!-- 						Refund</button> -->
+				<!-- 					<button type="button" class="btn btn-white" data-dismiss="modal" -->
+				<!-- 						(click)="showAddPaymentPopup = false;">Cancel</button> -->
+				<!-- 				</div> -->
+			</div>
+		</div>
+	</div>
+</div>
